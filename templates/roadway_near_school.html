@@ -35,8 +35,6 @@
                 <option value="---">Choose One option</option>
                 <option value="Two-Way">Two Way</option>
                 <option value="One-Way">One Way</option>
-                <!-- <option value="Partial-One-Way">Partial One Way</option>
-                <option value="Partial-Two-Way">Partial Two Way</option> -->
             </select>
 
             <div id="twoway" class="hidden">
@@ -178,6 +176,7 @@
             {# </div>#}
 
         <div class="form-group">
+            <img src="/media/gate.png"><br><br>
             <label for="pictures_near_side">8. From near-side looking into far-side:</label>
             <input type="file" id="pictures_near_side" name="pictures_near_side"><br>
             <label for="pictures_far_side">9. From far-side looking into near-side:</label>
@@ -208,13 +207,42 @@
 
             <div class="form-group">
                 <label for="num_traffic_lights"> 10.2 Number of Traffic Light Poles:</label>
-                <input type="number" id="num_traffic_lights" name="num_traffic_lights" min="1">
+
+                <select id="traffic_light_number" name="traffic_light_number">
+                    <option value="---">Choose One option</option>
+                    <option value="One">1</option>
+                    <option value="Two">2</option>
+                    <option value="Three">3</option>
+                </select>
+                <div id="trafficlight1" class="hidden">
+                    <label for="traffic_lights_pictures"> 10.3 Upload Picture of the System:</label><br>
+                    <label for="traffic_lights_pictures">Traffic Light 1 :</label>
+                    <input type="file" id="traffic_lights_pic1" name="traffic_lights_pic1">
+                </div>
+
+                <div id="trafficlight2" class="hidden">
+                    <label for="traffic_lights_pictures"> 10.3 Upload Picture of the System:</label><br>
+                    <label for="traffic_lights_pic2">Traffic Light 1 :</label>
+                    <input type="file" id="traffic_lights_pic2" name="traffic_lights_pic2"> <br>
+                    <label for="traffic_lights_pic3">Traffic Light 2 :</label>
+                    <input type="file" id="traffic_lights_pic3" name="traffic_lights_pic3">
+                </div>
+
+                <div id="trafficlight3" class="hidden">
+                    <label for="traffic_lights_pictures"> 10.3 Upload Picture of the System:</label><br>
+                    <label for="traffic_lights_pic4">Traffic Light 1 :</label>
+                    <input type="file" id="traffic_lights_pic4" name="traffic_lights_pic4"> <br>
+                    <label for="traffic_lights_pic5">Traffic Light 2 :</label>
+                    <input type="file" id="traffic_lights_pic5" name="traffic_lights_pic5"><br>
+                    <label for="traffic_lights_pic6">Traffic Light 3 :</label>
+                    <input type="file" id="traffic_lights_pic6" name="traffic_lights_pic6">
+                </div>
+
+
+
             </div>
 
-            <div class="form-group">
-                <label for="traffic_lights_pictures"> 10.3 Upload Picture of the System:</label>
-                <input type="file" id="traffic_lights_pictures" name="traffic_lights_pictures[]" multiple>
-            </div>
+
         </div>
     </fieldset>
 
@@ -459,7 +487,7 @@
         document.getElementById("traffic_lights_details").classList.add('hidden')
     }
 
-    // Show/Hide Multiple Entrances Form
+    // Show/Hide carriage way dirrection Form
     document.getElementById('carriage_Way_Direction').addEventListener('change', function () {
         const twoway = document.getElementById('twoway');
         const oneway = document.getElementById('oneway');
@@ -472,6 +500,31 @@
         } else if (this.value === 'One-Way') {
             twoway.classList.add('hidden');
             oneway.classList.remove('hidden');
+        }
+    });
+
+    // Show/Hide Number of traffic light picture upload Form
+    document.getElementById('traffic_light_number').addEventListener('change', function () {
+        const trafficlight1 = document.getElementById('trafficlight1');
+        const trafficlight2 = document.getElementById('trafficlight2');
+        const trafficlight3 = document.getElementById('trafficlight3');
+
+
+        if (this.value === 'One') {
+            trafficlight1.classList.remove('hidden');
+            trafficlight2.classList.add('hidden');
+            trafficlight3.classList.add('hidden');
+
+        } else if (this.value === 'Two') {
+            trafficlight1.classList.add('hidden');
+            trafficlight2.classList.remove('hidden');
+            trafficlight3.classList.add('hidden');
+        }
+        else {
+            trafficlight1.classList.add('hidden');
+            trafficlight2.classList.add('hidden');
+            trafficlight3.classList.remove('hidden');
+
         }
     });
 </script>
