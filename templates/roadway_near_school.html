@@ -47,7 +47,14 @@
                 <label for="East-West">East-West</label><br>
                 <br>
 
+                <label for="Patial_Two_way">Partial Two Way </label>
+                <input type="radio" id="Partial_Two_way_yes" name="Partial_Two_way" value="Yes"
+                    onclick="loadBlockPartialTwo();">
+                <label for="Patial_Two_way_yes">Yes</label>
 
+                <input type="radio" id="Partial_Two_way_no" name="Partial_Two_way" value="No"
+                    onclick="loadBlockPartialTwoNo();">
+                <label for="Patial_Two_way_no">No</label>
 
             </div>
 
@@ -432,6 +439,15 @@
 
     function loadBlockPartialOneNo() {
         document.getElementById("partialoneway").classList.add('hidden')
+
+    }
+
+    function loadBlockPartialTwo() {
+        document.getElementById("partialtwoway").classList.remove('hidden')
+    }
+
+    function loadBlockPartialTwoNo() {
+        document.getElementById("partialtwoway").classList.add('hidden')
 
     }
 
