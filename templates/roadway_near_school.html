@@ -287,18 +287,79 @@
         <div id="foot_over_bridge_details" class="hidden">
             <div class="form-group">
                 <label for="num_foot_over_bridges">Number of Foot-over Bridges:</label>
-                <input type="number" id="num_foot_over_bridges" name="num_foot_over_bridges" min="1">
+                <select id="foot_over_bridge_number" name="foot_over_bridge_number">
+                    <option value="---">Choose One option</option>
+                    <option value="One">1</option>
+                    <option value="Two">2</option>
+                    <option value="Three">3</option>
+                </select>
             </div>
 
-            <div class="form-group">
-                <label for="foot_over_bridge_picture">Picture of the Facility:</label>
-                <input type="file" id="foot_over_bridge_picture" name="foot_over_bridge_picture">
+            <div id="footover1" class="hidden">
+                <div class="form-group">
+                    <label for="foot_over_bridge_picture">Picture of the Facility 1:</label>
+                    <input type="file" id="foot_over_bridge_picture1" name="foot_over_bridge_picture1">
+                </div>
+
+                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 1:</label>
+                <input type="text" id="foot_over_bridge_map_coordinate1" name="foot_over_bridge_map_coordinate1"
+                    placeholder="Pin-point on map" readonly>
+                <div id="foot_over_bridge_map1"></div>
             </div>
 
-            <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location:</label>
-            <input type="text" id="foot_over_bridge_map_coordinate" name="foot_over_bridge_map_coordinate"
-                placeholder="Pin-point on map" readonly>
-            <div id="foot_over_bridge_map"></div>
+            <div id="footover2" class="hidden">
+                <div class="form-group">
+                    <label for="foot_over_bridge_picture">Picture of the Facility 1:</label>
+                    <input type="file" id="foot_over_bridge_picture2" name="foot_over_bridge_picture2">
+                </div>
+
+                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 1:</label>
+                <input type="text" id="foot_over_bridge_map_coordinate2" name="foot_over_bridge_map_coordinate2"
+                    placeholder="Pin-point on map" readonly>
+                <div id="foot_over_bridge_map2"></div> <br>
+
+                <div class="form-group"></div>
+                <label for="foot_over_bridge_picture">Picture of the Facility 2:</label>
+                <input type="file" id="foot_over_bridge_picture2" name="foot_over_bridge_picture2"><br>
+
+
+                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 2:</label>
+                <input type="text" id="foot_over_bridge_map_coordinate3" name="foot_over_bridge_map_coordinate3"
+                    placeholder="Pin-point on map" readonly>
+                <div id="foot_over_bridge_map3"></div> <br>
+            </div>
+
+            <div id="footover3" class="hidden">
+                <div class="form-group">
+                    <label for="foot_over_bridge_picture">Picture of the Facility 1:</label>
+                    <input type="file" id="foot_over_bridge_picture4" name="foot_over_bridge_picture4">
+                </div>
+
+                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 1:</label>
+                <input type="text" id="foot_over_bridge_map_coordinate4" name="foot_over_bridge_map_coordinate4"
+                    placeholder="Pin-point on map" readonly>
+                <div id="foot_over_bridge_map4"></div> <br>
+
+                <div class="form-group"></div>
+                <label for="foot_over_bridge_picture">Picture of the Facility 2:</label>
+                <input type="file" id="foot_over_bridge_picture5" name="foot_over_bridge_picture5">
+
+
+                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 2:</label>
+                <input type="text" id="foot_over_bridge_map_coordinate5" name="foot_over_bridge_map_coordinate5"
+                    placeholder="Pin-point on map" readonly>
+                <div id="foot_over_bridge_map5"></div> <br>
+
+                <div class="form-group"></div>
+                <label for="foot_over_bridge_picture">Picture of the Facility 3:</label>
+                <input type="file" id="foot_over_bridge_picture6" name="foot_over_bridge_picture6">
+
+
+                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 3:</label>
+                <input type="text" id="foot_over_bridge_map_coordinate6" name="foot_over_bridge_map_coordinate6"
+                    placeholder="Pin-point on map" readonly>
+                <div id="foot_over_bridge_map6"></div>
+            </div>
         </div>
     </fieldset>
 
@@ -422,7 +483,7 @@
         input.addEventListener('change', function () {
             document.getElementById('foot_over_bridge_details').classList.toggle('hidden', this.value !== 'Yes');
             if (this.value === 'Yes') {
-                initializeMap('foot_over_bridge_map', 'foot_over_bridge_map_coordinate');
+                initializeMap('foot_over_bridge_map1', 'foot_over_bridge_map_coordinate1', 'foot_over_bridge_map2', 'foot_over_bridge_map_coordinate2', 'foot_over_bridge_map3', 'foot_over_bridge_map_coordinate3', 'foot_over_bridge_map4', 'foot_over_bridge_map_coordinate4', 'foot_over_bridge_map5', 'foot_over_bridge_map_coordinate5', 'foot_over_bridge_map6', 'foot_over_bridge_map_coordinate6');
             }
         });
     });
@@ -502,13 +563,35 @@
             oneway.classList.remove('hidden');
         }
     });
+    // Show/Hide Number of Foot bridge Form
+    document.getElementById('foot_over_bridge_number').addEventListener('change', function () {
+        const footover1 = document.getElementById('footover1');
+        const footover2 = document.getElementById('footover2');
+        const footover3 = document.getElementById('footover3');
+
+        if (this.value === 'One') {
+            footover1.classList.remove('hidden');
+            footover2.classList.add('hidden');
+            footover3.classList.add('hidden');
+
+        } else if (this.value === 'Two') {
+            footover1.classList.add('hidden');
+            footover2.classList.remove('hidden');
+            footover3.classList.add('hidden');
+        }
+        else {
+            footover1.classList.add('hidden');
+            footover2.classList.add('hidden');
+            footover3.classList.remove('hidden');
+
+        }
+    });
 
     // Show/Hide Number of traffic light picture upload Form
     document.getElementById('traffic_light_number').addEventListener('change', function () {
         const trafficlight1 = document.getElementById('trafficlight1');
         const trafficlight2 = document.getElementById('trafficlight2');
         const trafficlight3 = document.getElementById('trafficlight3');
-
 
         if (this.value === 'One') {
             trafficlight1.classList.remove('hidden');
@@ -526,6 +609,7 @@
             trafficlight3.classList.remove('hidden');
 
         }
+
     });
 </script>
 {% endblock %}
