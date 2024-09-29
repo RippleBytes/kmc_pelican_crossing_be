@@ -23,8 +23,8 @@
     <!-- School Type -->
     <label for="schoolType">2. Type:</label>
     <select id="schoolType" name="schoolType" required>
-        <option value="public">Public</option>
-        <option value="private">Private</option>
+        <option value="Public">Public</option>
+        <option value="Private">Private</option>
     </select>
 
     <!-- Ward -->
@@ -55,7 +55,7 @@
 {#    <label for="entranceLocation" >6. Pin-point Entrance/Exit Location:</label>#}
 {#    <!-- <input type="text" id="entranceLocation" name="entranceLocation" placeholder="Pin-point on map" readonly> -->#}
 
-   
+
 
     <!-- Coordinates of School -->
     <label for="schoolCoordinates">6. Coordinates of the School (Geometric Center):</label>
@@ -65,8 +65,8 @@
     <!-- School Bus/Shuttle Service Facility -->
     <label for="busFacility">7. School Bus/Shuttle Service Facility:</label>
     <select id="busFacility" name="busFacility" required>
-        <option value="no">No</option>
-        <option value="yes">Yes</option>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
     </select>
 
     <!-- School Bus Details if yes -->
@@ -77,9 +77,9 @@
         <label for="busOwnership">7.2. School Owned or Hired:</label>
         <select id="busOwnership" name="busOwnership">
             <option value="----">Choose Option</option>
-            <option value="owned">School Owned</option>
-            <option value="hired">Hired</option>
-            <option value="mixed">Mixed</option>
+            <option value="School-Owned">School Owned</option>
+            <option value="Hired">Hired</option>
+            <option value="Mixed">Mixed</option>
         </select>
 
         <div id="mixedBusDetails" class="hidden">
@@ -92,18 +92,21 @@
 
         <label for="busParking">7.5. Parking Facility for School Buses:</label>
         <select id="busParking" name="busParking">
-            <option value="inside">Inside Compound</option>
-            <option value="outside">Outside Compound</option>
+            <option value="Inside-Compound">Inside Compound</option>
+            <option value="Outside-Compound">Outside Compound</option>
         </select>
 
         <div id="busMap" class="hidden"></div>
-
+        
         <!-- Bus Pick up/Drop off Points -->
-        <label for="pickDropLocation">8. Pick up FROM SCHOOL and Drop off AT SCHOOL Points:</label>
-        <input type="text" id="pickDropLocation" name="pickDropLocation" placeholder="Pin-point on map">
-        <div id="dropOffMap" class="hidden"></div>
-        </div>
+        <label for="pickLocation">8. Pick up FROM SCHOOL Point:</label>
+        <input type="text" id="pickLocation" name="pickLocation" placeholder="Pin-point on map">
+        <div id="pickUpMap" class="hidden"></div>
 
+        <label for="dropLocation">8. Drop off AT SCHOOL Point:</label>
+        <input type="text" id="dropLocation" name="dropLocation" placeholder="Pin-point on map">
+        <div id="dropOffMap" class="hidden"></div>
+    </div>
         <label for="isSameTimingAllYear"> Is Same Timing All Year</label>
          <input type="checkbox" checked name="isSameTimingAllYear" id="isSameTimingAllYear"/>
         <div id="sameTiming" class="">
@@ -195,25 +198,33 @@
         // Initialize the maps
         initializeMap('map', 'schoolCoordinates');
         initializeMap('busMap', 'busParkingLocation');
-        initializeMap('dropOffMap', 'pickDropLocation');
+        initializeMap('pickUpMap', 'pickLocation');
+        initializeMap('dropOffMap', 'dropLocation');
 
         // Show/Hide Bus Details if Bus Facility is available
         document.getElementById('busFacility').addEventListener('change', function () {
             const busDetails = document.getElementById('busDetails');
-            const busMapContainer = document.getElementById('busMap');
             const dropOffMapContainer = document.getElementById('dropOffMap');
-            if (this.value === 'yes') {
+            const pickMapContainer = document.getElementById('pickUpMap');
+            if (this.value === 'Yes') {
                 busDetails.classList.remove('hidden');
-                if (document.getElementById('busParking').value === 'outside') {
-                    busMapContainer.classList.remove('hidden');
-                }
                 dropOffMapContainer.classList.remove('hidden');
+                pickMapContainer.classList.remove('hidden');
             } else {
                 busDetails.classList.add('hidden');
-                busMapContainer.classList.add('hidden');
                 dropOffMapContainer.classList.add('hidden');
+                pickMapContainer.classList.add('hidden');
             }
         });
+        
+        document.getElementById('busParking').addEventListener('change', function (){
+            const busMapContainer = document.getElementById('busMap');
+            if (this.value === 'Outside-Compound') {
+                    busMapContainer.classList.remove('hidden');
+            }{
+                    busMapContainer.classList.add('hidden');
+            }
+        })
 
         // Show/Hide Mixed Bus Ownership Details
         document.getElementById('busOwnership').addEventListener('change', function () {

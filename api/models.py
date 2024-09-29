@@ -3,19 +3,19 @@ from django.db import models
 
 class School(models.Model):
     SCHOOL_TYPE_CHOICES = [
-        ('public', 'Public'),
-        ('private', 'Private'),
+        ('Public', 'Public'),
+        ('Private', 'Private'),
     ]
 
     BUS_OWNERSHIP_CHOICES = [
-        ('owned', 'School Owned'),
-        ('hired', 'Hired'),
-        ('mixed', 'Mixed'),
+        ('School-Owned', 'School-Owned'),
+        ('Hired', 'Hired'),
+        ('Mixed', 'Mixed'),
     ]
 
     PARKING_CHOICES = [
-        ('inside', 'Inside Compound'),
-        ('outside', 'Outside Compound'),
+        ('Inside-Compound', 'Inside-Compound'),
+        ('Outside-Compound', 'Outside-Compound'),
     ]
 
     WARDS_CHOICES = [
@@ -39,11 +39,16 @@ class School(models.Model):
 
     bus_facility = models.BooleanField(default=False)
     bus_count = models.PositiveIntegerField(null=True, blank=True)
-    bus_ownership = models.CharField(max_length=10, choices=BUS_OWNERSHIP_CHOICES, null=True, blank=True)
+    bus_ownership = models.CharField(max_length=100, choices=BUS_OWNERSHIP_CHOICES, null=True, blank=True)
     owned_buses_count = models.PositiveIntegerField(null=True, blank=True)
     hired_buses_count = models.PositiveIntegerField(null=True, blank=True)
-    bus_parking = models.CharField(max_length=10, choices=PARKING_CHOICES, null=True, blank=True)
-    pick_drop_location = models.CharField(max_length=100, null=True, blank=True)
+    bus_parking = models.CharField(max_length=100, choices=PARKING_CHOICES, null=True, blank=True)
+    bus_parking_latitude = models.CharField(max_length=100, null= True, blank=True)
+    bus_parking_longitude = models.CharField(max_length=100, null= True, blank=True)
+    pick_up_location_latitude = models.CharField(max_length=100, null=True, blank=True)
+    pick_up_location_longitude = models.CharField(max_length=100, null=True, blank=True)
+    drop_off_location_latitude = models.CharField(max_length=100, null=True, blank=True)
+    drop_off_location_longitude = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.school_name

@@ -270,7 +270,6 @@ def school_form_view(request):
         owned_buses_count = request.POST.get('ownedBusesCount') or None
         hired_buses_count = request.POST.get('hiredBusesCount') or None
         bus_parking = request.POST.get('busParking') or None
-        pick_drop_location = request.POST.get('pickDropLocation') or None
         is_same_timing_all_year = len(request.POST.get('isSameTimingAllYear')) > 0
         if is_same_timing_all_year:
             opening_time_summer = request.POST.get('openingTime')
@@ -285,8 +284,12 @@ def school_form_view(request):
 
         s_latitude, s_longitude = str(school_coordinates).split(",")
 
+        pick_location = request.POST.get('pickLocation') or None
+        drop_location = request.POST.get('dropLocation') or None
+
+
         # Save the school object
-        school = School.objects.create(
+        school = School(
             school_name=school_name,
             school_type=school_type,
             ward=ward,
@@ -300,13 +303,24 @@ def school_form_view(request):
             owned_buses_count=owned_buses_count,
             hired_buses_count=hired_buses_count,
             bus_parking=bus_parking,
-            pick_drop_location=pick_drop_location,
             same_timings_all_year=is_same_timing_all_year,
             opening_time_summer=opening_time_summer,
             closing_time_summer=closing_time_summer,
             opening_time_winter=opening_time_winter,
             closing_time_winter=closing_time_winter
         )
+
+        if pick_location is not None:
+            latitude, longitude = str(pick_location).split(",")
+            school.pick_up_location_latitude = latitude
+            school.pick_up_location_longitude = longitude
+
+        if drop_location is not None:
+            latitude, longitude = str(drop_location).split(",")
+            school.drop_off_location_latitude = latitude
+            school.drop_off_location_longitude = longitude
+
+        school.save()
 
         # Handle multiple entrances
         if multiple_entrances:
