@@ -35,8 +35,8 @@
                 <option value="---">Choose One option</option>
                 <option value="Two-Way">Two Way</option>
                 <option value="One-Way">One Way</option>
-                <option value="Partial-One-Way">Partial One Way</option>
-                <option value="Partial-Two-Way">Partial Two Way</option>
+                <!-- <option value="Partial-One-Way">Partial One Way</option>
+                <option value="Partial-Two-Way">Partial Two Way</option> -->
             </select>
 
             <div id="twoway" class="hidden">
@@ -45,6 +45,10 @@
 
                 <input type="radio" id="East-West" name="carriage_way_direction" value="East-West">
                 <label for="East-West">East-West</label><br>
+                <br>
+
+
+
             </div>
 
             <div id="oneway" class="hidden">
@@ -58,15 +62,32 @@
                 <label for="East">East</label><br>
 
                 <input type="radio" id="West" name="carriage_way_direction" value="West">
-                <label for="West">West</label><br>
+                <label for="West">West</label><br><br>
+
+                <label for="Patial_One_way">Partial One Way </label>
+                <input type="radio" id="Partial_One_way_yes" name="Partial_One_way" value="Yes"
+                    onclick="loadBlockpartialOne();">
+                <label for="Patial_One_way_yes">Yes</label>
+
+                <input type="radio" id="Partial_One_way_no" name="Partial_One_way" value="No"
+                    onclick="loadBlockPartialOneNo();">
+                <label for="Patial_One_way_no">No</label>
+
             </div>
             <div id="partialoneway" class="hidden">
-                <label for="openingTime">Time</label>
-                <input type="time" name="Partial_One_Way_Time" id="Partial-One-Way-Time" />
+                <label for="partialonewayopeningTime">Start Time</label>
+                <input type="time" name="Partial_One_Way_Time_Start_Time" id="Partial_One_Way_Time_Start_Time" />
+
+                <label for="closingTime">Close Time</label>
+                <input type="time" name="Partial_One_Way_Time_Close_Time" id="Partial_One_Way_Time_Close_Time" />
             </div>
+
             <div id="partialtwoway" class="hidden">
-                <label for="openingTime">Time</label>
-                <input type="time" name="Partial_Tne_Way_Time" id="Partial-Two-Way-Time" />
+                <label for="partialtwowaystarttime">Start Time</label>
+                <input type="time" name="Partial_Two_Way_Time_Start_Time" id="Partial_Two_Way_Time_Start_Time" />
+
+                <label for="partialtwowayclosingtime">Close Time</label>
+                <input type="time" name="Partial_Two_Way_Time_Close_Time" id="Partial_Two_Way_Time_Close_Time" />
 
             </div>
 
@@ -405,6 +426,14 @@
         document.getElementById("width_one_block").classList.add('hidden')
         document.getElementById("width_two_block").classList.add('hidden')
     }
+    function loadBlockPartialOne() {
+        document.getElementById("partialoneway").classList.remove('hidden')
+    }
+
+    function loadBlockPartialOneNo() {
+        document.getElementById("partialoneway").classList.add('hidden')
+
+    }
 
     function trafficLightExist() {
         document.getElementById("traffic_lights_details").classList.remove('hidden')
@@ -418,29 +447,15 @@
     document.getElementById('carriage_Way_Direction').addEventListener('change', function () {
         const twoway = document.getElementById('twoway');
         const oneway = document.getElementById('oneway');
-        const partialoneway = document.getElementById('partialoneway');
-        const partialtwoway = document.getElementById('partialtwoway')
+
 
         if (this.value === 'Two-Way') {
             twoway.classList.remove('hidden');
             oneway.classList.add('hidden');
-            partialoneway.classList.add('hidden');
-            partialtwoway.classList.add('hidden');
+
         } else if (this.value === 'One-Way') {
             twoway.classList.add('hidden');
-            partialoneway.classList.add('hidden');
-            partialtwoway.classList.add('hidden');
             oneway.classList.remove('hidden');
-        } else if (this.value === 'Partial-One-Way') {
-            partialoneway.classList.remove('hidden');
-            twoway.classList.add('hidden');
-            partialtwoway.classList.add('hidden');
-            oneway.classList.add('hidden');
-        } else {
-            partialtwoway.classList.add('hidden')
-            partialoneway.classList.remove('hidden');
-            twoway.classList.add('hidden');
-            oneway.classList.add('hidden');
         }
     });
 </script>
