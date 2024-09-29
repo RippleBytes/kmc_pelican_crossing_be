@@ -1,0 +1,273 @@
+from django.db import models
+
+
+class School(models.Model):
+    SCHOOL_TYPE_CHOICES = [
+        ('public', 'Public'),
+        ('private', 'Private'),
+    ]
+
+    BUS_OWNERSHIP_CHOICES = [
+        ('owned', 'School Owned'),
+        ('hired', 'Hired'),
+        ('mixed', 'Mixed'),
+    ]
+
+    PARKING_CHOICES = [
+        ('inside', 'Inside Compound'),
+        ('outside', 'Outside Compound'),
+    ]
+
+    WARDS_CHOICES = [
+        (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9),
+        (10, 10), (11, 11), (12, 12), (13, 13), (14, 14), (15, 15), (16, 16), (17, 17), (18, 18), (19, 19),
+        (20, 20), (21, 21), (22, 22), (23, 23), (24, 24), (25, 25), (26, 26), (27, 27), (28, 28), (29, 29), (30, 30),
+        (31, 31), (32, 32)]
+
+    school_name = models.CharField(max_length=255)
+    school_type = models.CharField(max_length=10, choices=SCHOOL_TYPE_CHOICES)
+    ward = models.PositiveIntegerField(choices=WARDS_CHOICES)
+    same_timings_all_year = models.BooleanField(default=True)
+    opening_time_summer = models.TimeField(null=True, blank=True)
+    closing_time_summer = models.TimeField(null=True, blank=True)
+    opening_time_winter = models.TimeField(null=True, blank=True)
+    closing_time_winter = models.TimeField(null=True, blank=True)
+    multiple_entrances = models.BooleanField(default=False)
+
+    school_coordinates_latitude = models.CharField(max_length=100)
+    school_coordinates_longitude = models.CharField(max_length=100)
+
+    bus_facility = models.BooleanField(default=False)
+    bus_count = models.PositiveIntegerField(null=True, blank=True)
+    bus_ownership = models.CharField(max_length=10, choices=BUS_OWNERSHIP_CHOICES, null=True, blank=True)
+    owned_buses_count = models.PositiveIntegerField(null=True, blank=True)
+    hired_buses_count = models.PositiveIntegerField(null=True, blank=True)
+    bus_parking = models.CharField(max_length=10, choices=PARKING_CHOICES, null=True, blank=True)
+    pick_drop_location = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.school_name
+
+
+class EntranceExit(models.Model):
+    school = models.ForeignKey(School, related_name='entrances', on_delete=models.CASCADE)
+    gate_name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='entrances/', null=True, blank=True)
+    latitude = models.CharField(max_length=100, null=True, blank=True)
+    longitude = models.CharField(max_length=100, null=True, blank=True)
+    is_entrance = models.BooleanField(default=False)
+    is_exit = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.gate_name
+
+
+class RoadwayFacilityNear(models.Model):
+    DIRECTION_CHOICES = [
+        ('North-South', 'North-South'),
+        ('East-West', 'East-West'),
+        ('North', 'North'),
+        ('South', 'South'),
+        ('East', 'East'),
+        ('West', 'West')
+    ]
+    DIVIDED_CHOICES = [
+        ('Undivided', 'Undivided'),
+        ('Central-Refuge', 'Central-Refuge'),
+        ('Barrier', 'Barrier')
+    ]
+
+    INTERSECTION_TYPE = [
+        ('No-Intersection', 'No-Intersection'),
+        ('T-Junction', 'T-Junction'),
+        ('4-Legged-Intersection', '4-Legged-Intersection'),
+        ('Y-Junction', 'Y-Junction'),
+        ('Staggered-T-Junction', 'Staggered-T-Junction'),
+        ('Rotary-Or-Roundabout', 'Rotary-Or-Roundabout'),
+    ]
+
+    CENTRAL_MARKING = [
+        ('None', 'None'),
+        ('Broken-Single', 'Broken-Single'),
+        ('Broken-Double', 'Broken-Double'),
+        ('Continuous-Single', 'Continuous-Single'),
+        ('Continuous-Double', 'Continuous-Double'),
+    ]
+
+    BOTH_SIDE_OR_ONE = [
+        ('None', 'None'),
+        ('Both-Side', 'Both-Side'),
+        ('One-Side', 'One-Side')
+    ]
+
+
+    YES_NO_CHOICE = [
+        ('Yes', 'Yes'),
+        ('No', 'No')
+    ]
+
+    FOOTPATH = [
+        ('One-Side', 'One-Side'),
+        ('Both-Side', 'Both-Side'),
+        ('None', 'None'),
+    ]
+
+    TRAFFIC_LIGHT_FUNC = [
+        ('Working', 'Working'),
+        ('Not-Working', 'Not-Working')
+    ]
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    carriage_width = models.FloatField()
+    carriage_direction = models.CharField(max_length=20, choices=DIRECTION_CHOICES)
+    divided = models.CharField(max_length=20, choices=DIVIDED_CHOICES)
+    intersection_type = models.CharField(max_length=50, null=True, blank=True, choices=INTERSECTION_TYPE)
+    number_of_lanes = models.CharField(max_length=100, null=True, blank=True)
+    central_marking = models.CharField(max_length=50, null=True, blank=True, choices=CENTRAL_MARKING)
+
+    footpath = models.CharField(max_length=100, choices=FOOTPATH)
+    width_side_one = models.FloatField(null=True, blank=True)
+    width_side_two = models.FloatField(null=True, blank=True)
+
+    pictures_near_side = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    pictures_far_side = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    traffic_lights = models.CharField(max_length=3, choices=YES_NO_CHOICE)
+    traffic_lights_working = models.CharField(max_length=15, null=True, blank=True, choices=TRAFFIC_LIGHT_FUNC)
+    num_traffic_lights = models.IntegerField(null=True, blank=True)
+    traffic_lights_pictures = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    zebra_crossings = models.CharField(max_length=3, choices=YES_NO_CHOICE)
+    zebra_crossings_latitude = models.CharField(max_length=100)
+    zebra_crossings_longitude = models.CharField(max_length=100)
+    num_zebra_crossings = models.IntegerField(null=True, blank=True)
+    zebra_width = models.FloatField(null=True, blank=True)
+
+    foot_over_bridge = models.CharField(max_length=3, choices=YES_NO_CHOICE)
+    num_foot_over_bridges = models.IntegerField(null=True, blank=True)
+    foot_over_bridge_picture = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    power_source = models.CharField(max_length=50, null=True, blank=True)
+    power_source_picture = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    electric_poles_picture = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    on_street_vehicle_parking = models.CharField(max_length=10, choices=BOTH_SIDE_OR_ONE)
+    street_side_one = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    street_side_two = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    viable_installation = models.CharField(max_length=3, choices=YES_NO_CHOICE)
+    reason = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.school.school_name} - Roadway Info Near"
+
+
+class RoadwayFacilityFar(models.Model):
+    DIRECTION_CHOICES = [
+        ('North-South', 'North-South'),
+        ('East-West', 'East-West'),
+        ('North', 'North'),
+        ('South', 'South'),
+        ('East', 'East'),
+        ('West', 'West')
+    ]
+    DIVIDED_CHOICES = [
+        ('Undivided', 'Undivided'),
+        ('Central-Refuge', 'Central-Refuge'),
+        ('Barrier', 'Barrier')
+    ]
+
+    INTERSECTION_TYPE = [
+        ('No-Intersection', 'No-Intersection'),
+        ('T-Junction', 'T-Junction'),
+        ('4-Legged-Intersection', '4-Legged-Intersection'),
+        ('Y-Junction', 'Y-Junction'),
+        ('Staggered-T-Junction', 'Staggered-T-Junction'),
+        ('Rotary-Or-Roundabout', 'Rotary-Or-Roundabout'),
+    ]
+
+    CENTRAL_MARKING = [
+        ('None', 'None'),
+        ('Broken-Single', 'Broken-Single'),
+        ('Broken-Double', 'Broken-Double'),
+        ('Continuous-Single', 'Continuous-Single'),
+        ('Continuous-Double', 'Continuous-Double'),
+    ]
+
+    BOTH_SIDE_OR_ONE = [
+        ('None', 'None'),
+        ('Both-Side', 'Both-Side'),
+        ('One-Side', 'One-Side')
+    ]
+
+    YES_NO_CHOICE = [
+        ('Yes', 'Yes'),
+        ('No', 'No')
+    ]
+
+    FOOTPATH = [
+        ('One-Side', 'One-Side'),
+        ('Both-Side', 'Both-Side'),
+        ('None', 'None'),
+    ]
+
+    TRAFFIC_LIGHT_FUNC = [
+        ('Working', 'Working'),
+        ('Not-Working', 'Not-Working')
+    ]
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    carriage_width = models.FloatField()
+    carriage_direction = models.CharField(max_length=20, choices=DIRECTION_CHOICES)
+    divided = models.CharField(max_length=20, choices=DIVIDED_CHOICES)
+    intersection_type = models.CharField(max_length=50, null=True, blank=True, choices=INTERSECTION_TYPE)
+    number_of_lanes = models.CharField(max_length=100, null=True, blank=True)
+    central_marking = models.CharField(max_length=50, null=True, blank=True, choices=CENTRAL_MARKING)
+
+    footpath = models.CharField(max_length=100, choices=FOOTPATH)
+    width_side_one = models.FloatField(null=True, blank=True)
+    width_side_two = models.FloatField(null=True, blank=True)
+
+    pictures_near_side = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    pictures_far_side = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    traffic_lights = models.CharField(max_length=3, choices=YES_NO_CHOICE)
+    traffic_lights_working = models.CharField(max_length=15, null=True, blank=True, choices=TRAFFIC_LIGHT_FUNC)
+    num_traffic_lights = models.IntegerField(null=True, blank=True)
+    traffic_lights_pictures = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    zebra_crossings = models.CharField(max_length=3, choices=YES_NO_CHOICE)
+    zebra_crossings_latitude = models.CharField(max_length=100)
+    zebra_crossings_longitude = models.CharField(max_length=100)
+    num_zebra_crossings = models.IntegerField(null=True, blank=True)
+    zebra_width = models.FloatField(null=True, blank=True)
+
+    foot_over_bridge = models.CharField(max_length=3, choices=YES_NO_CHOICE)
+    num_foot_over_bridges = models.IntegerField(null=True, blank=True)
+    foot_over_bridge_picture = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    power_source = models.CharField(max_length=50, null=True, blank=True)
+    power_source_picture = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    electric_poles_picture = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    on_street_vehicle_parking = models.CharField(max_length=10, choices=BOTH_SIDE_OR_ONE)
+    street_side_one = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    street_side_two = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
+    viable_installation = models.CharField(max_length=3, choices=YES_NO_CHOICE)
+    reason = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.school.school_name} - Roadway Info Far"
+
+
+class FinalizationForm(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    carriage_way_width = models.FloatField()
+    footpath_info = models.TextField(null=True, blank=True)
+    zebra_crossing_info = models.TextField(null=True, blank=True)
+    electrical_infrastructure = models.TextField(null=True, blank=True)
+    traffic_direction = models.CharField(max_length=20)
+    installation_point_latitude = models.CharField(max_length=100)
+    installation_point_longitude = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"Finalization for {self.school.name} "

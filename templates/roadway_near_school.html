@@ -1,0 +1,387 @@
+{%  extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+        <style>
+        .hidden {
+             display: none;
+        }
+{% endblock %}
+
+{% block content %}
+<h1>Roadway and Existing Facilities Form ( Near )</h1>
+   <form action="{% url 'roadway_form_submission' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <!-- Step 2: Roadway and Existing Facilities Information -->
+       <label for="schoolName">Choose School Name:</label>
+       <select id="schoolName" name="schoolId" required>
+           {% for x in data %}
+            <option value="{{ x.id }}">{{ x }}</option>
+           {% endfor %}
+
+        </select>
+       <fieldset>
+                <legend>Roadway Information</legend>
+                <div class="form-group">
+                    <label for="carriage-width">1. Carriage-way Width right outside the gate(s) in meters:</label>
+                    <input type="number" id="carriage-width" name="carriage_width" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Carriage Way Direction</label><br>
+
+                    <input type="radio" id="North-South" name="carriage_way_direction" value="North-South" required>
+                    <label for="North-South">North-South</label><br>
+
+                    <input type="radio" id="East-West" name="carriage_way_direction" value="East-West">
+                    <label for="East-West">East-West</label><br>
+
+                    <input type="radio" id="North" name="carriage_way_direction" value="North">
+                    <label for="North">North</label><br>
+
+                    <input type="radio" id="South" name="carriage_way_direction" value="South">
+                    <label for="South">South</label><br>
+
+                    <input type="radio" id="East" name="carriage_way_direction" value="East">
+                    <label for="East">East</label><br>
+
+                    <input type="radio" id="West" name="carriage_way_direction" value="West">
+                    <label for="West">West</label><br>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Divided/Undivided:</label><br>
+                    <input type="radio" id="undivided" name="divided_undivided" value="Undivided" required>
+                    <label for="undivided">Undivided</label><br>
+                    <input type="radio" id="Central-Refuge" name="divided_undivided" value="Central-Refuge" >
+                    <label for="Central-Refuge">Central-Refuge</label><br>
+                    <input type="radio" id="Barrier" name="divided_undivided" value="Barrier" >
+                    <label for="Barrier">Barrier</label><br>
+                </div>
+
+           <div class="form-group">
+                    <label>4. Is it at an intersection?</label><br>
+                    <input type="radio" id="no-intersection"  name="intersection_type" value="No-Intersection">
+                    <label for="no-intersection">No Intersection</label><br>
+                    <input type="radio" id="t-junction" name="intersection_type" value="T-junction">
+                    <label for="t-junction">T junction</label><br>
+                    <input type="radio" id="4-legged-intersection" name="intersection_type" value="4-Legged-Intersection">
+                    <label for="4-legged-intersection">4 legged intersection</label><br>
+                    <input type="radio" id="y-junction" name="intersection_type" value="Y-Junction">
+                    <label for="y-junction">Y junction</label><br>
+                    <input type="radio" id="staggered-t-junction" name="intersection_type" value="Staggered-T-Junction">
+                    <label for="staggered-t-junction">Staggered T junction</label><br>
+                    <input type="radio" id="rotary-roundabout" name="intersection_type" value="Rotary-Or-Roundabout">
+                    <label for="rotary-roundabout">Rotary or Roundabout</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="num-lanes">5. Number of Lanes:</label>
+                    <input type="number" id="num-lanes" name="num_lanes" min="1">
+{#                    <input type="radio" id="not_clear" name="num_lanes" value="not_clear">#}
+{#                    <label for="not_clear">Not Clear</label>#}
+                </div>
+
+                <div class="form-group">
+                    <label>6. Central Road Marking:</label><br>
+                    <input type="radio" id="none_marking" name="central_road_marking" value="None"  required>
+                    <label for="none_marking">None</label><br>
+                    <input type="radio" id="Broken-Single" name="central_road_marking" value="Broken-Single">
+                    <label for="Broken-Single">Broken-Single</label><br>
+                    <input type="radio" id="Broken-Double" name="central_road_marking" value="Broken-Double">
+                    <label for="Broken-Double">Broken-Double</label><br>
+                    <input type="radio" id="Continuous-Single" name="central_road_marking" value="Continuous-Single">
+                    <label for="Continuous-Single">Continuous-Single</label><br>
+                    <input type="radio" id="Continuous-Double" name="central_road_marking" value="Continuous-Double">
+                    <label for="Continuous-Double">Continuous-Double</label><br>
+
+                </div>
+
+                <div class="form-group">
+                    <label>7. Footpath/Sidewalk:</label><br>
+                    <input type="radio" id="one_side" name="footpath" value="One-Side"  onclick="loadBlockOne();" required>
+                    <label for="one_side">One Side</label><br>
+                    <input type="radio" id="both_sides" name="footpath" value="Both-Side" onclick="loadBlockTwo();">
+                    <label for="both_sides">Both Sides</label><br>
+                    <input type="radio" id="none_side" name="footpath" value="None" onclick="loadBlockNone();">
+                    <label for="none_side">None</label><br>
+                </div>
+
+                <div class="form-group">
+                    <div id="width_one_block" class="hidden">
+                        <label for="width_side_one">7.1. Width of Side One:</label>
+                        <input type="number" id="width_side_one" name="width_each_side">
+                    </div>
+                    <div id="width_two_block" class="hidden">
+                        <label for="width_side_two">7.2. Width of Side Two:</label>
+                        <input type="number" id="width_side_two" name="width_each_side">
+                    </div>
+                </div>
+
+{#                <div class="form-group">#}
+{#                    <label for="one_way">15. One-way/Two-way:</label><br>#}
+{#                    <input type="radio" id="one_way" name="one_way_two_way" value="one_way" required>#}
+{#                    <label for="one_way">One-way</label><br>#}
+{#                    <input type="radio" id="two_way" name="one_way_two_way" value="two_way">#}
+{#                    <label for="two_way">Two-way</label><br>#}
+{#                </div>#}
+
+                <div class="form-group">
+                    <label for="pictures_near_side">8. From near-side looking into far-side:</label>
+                    <input type="file" id="pictures_near_side" name="pictures_near_side"><br>
+                    <label for="pictures_far_side">9. From far-side looking into near-side:</label>
+                    <input type="file" id="pictures_near_side" name="pictures_far_side">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Existing Traffic Control System</legend>
+                <div class="form-group">
+                    <label>10. Traffic Lights:</label><br>
+                    <input type="radio" id="traffic_lights_no" name="traffic_lights" value="No" required onclick="trafficLightNotExist()">
+                    <label for="traffic_lights_no">No</label><br>
+                    <input type="radio" id="traffic_lights_yes" name="traffic_lights" value="Yes" onclick="trafficLightExist()">
+                    <label for="traffic_lights_yes">Yes</label><br>
+
+                </div>
+
+                <div id="traffic_lights_details" class="hidden">
+                    <div class="form-group">
+                        <label> 10.1Working:</label><br>
+                        <input type="radio" id="working" name="traffic_lights_working" value="Working" required>
+                        <label for="working">Working</label><br>
+                        <input type="radio" id="not_working" name="traffic_lights_working" value="Not-Working">
+                        <label for="not_working">Not Working</label><br>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="num_traffic_lights"> 10.2 Number of Traffic Light Poles:</label>
+                        <input type="number" id="num_traffic_lights" name="num_traffic_lights" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="traffic_lights_pictures"> 10.3 Upload Picture of the System:</label>
+                        <input type="file" id="traffic_lights_pictures" name="traffic_lights_pictures[]" multiple>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Zebra Crossings In Proximity</legend>
+                <div class="form-group">
+                    <label>11. Are there zebra crossings in proximity?</label>
+                    <input type="radio" id="zebra_crossings_yes" name="zebra_crossings" value="Yes" required>
+                    <label for="zebra_crossings_yes">Yes</label>
+                    <input type="radio" id="zebra_crossings_no" name="zebra_crossings" value="No">
+                    <label for="zebra_crossings_no">No</label>
+                </div>
+
+                <div id="zebra_crossings_details" class="hidden">
+                    <div class="form-group">
+                        <label for="num_zebra_crossings">Number of Zebra Crossings:</label>
+                        <input type="number" id="num_zebra_crossings" name="num_zebra_crossings" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zebra_width">Width of Marking:</label>
+                        <input type="number" id="zebra_width" name="zebra_width" step="0.1">
+                    </div>
+
+                    <label for="zebraMap">Pin-point Zebra Crossing Location:</label>
+                    <input type="text" id="ZebraMapCoordinate" name="zebraMapCoordinate" placeholder="Pin-point on map" readonly>
+                    <div id="zebraMap" ></div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Foot-over Bridge In Proximity</legend>
+                <div class="form-group">
+                    <label>12. Is there a foot-over bridge in proximity?</label>
+                    <input type="radio" id="foot_over_bridge_yes" name="foot_over_bridge" value="Yes" required>
+                    <label for="foot_over_bridge_yes">Yes</label>
+                    <input type="radio" id="foot_over_bridge_no" name="foot_over_bridge" value="No">
+                    <label for="foot_over_bridge_no">No</label>
+                </div>
+
+                <div id="foot_over_bridge_details" class="hidden">
+                    <div class="form-group">
+                        <label for="num_foot_over_bridges">Number of Foot-over Bridges:</label>
+                        <input type="number" id="num_foot_over_bridges" name="num_foot_over_bridges" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="foot_over_bridge_picture">Picture of the Facility:</label>
+                        <input type="file" id="foot_over_bridge_picture" name="foot_over_bridge_picture">
+                    </div>
+
+                    <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location:</label>
+                    <input type="text" id="foot_over_bridge_map_coordinate" name="foot_over_bridge_map_coordinate" placeholder="Pin-point on map" readonly>
+                    <div id="foot_over_bridge_map"></div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Electrical Infrastructure Nearby</legend>
+                <div class="form-group">
+                    <label for="power_source">13. Power Source:</label>
+                    <input type="text" id="power_source" name="power_source">
+                </div>
+
+                <div class="form-group">
+                    <label for="power_source_picture">Picture of Power Source:</label>
+                    <input type="file" id="power_source_picture" name="power_source_picture">
+                </div>
+
+                <div class="form-group">
+                    <label for="electric_poles_picture">14. Existing Electric Poles Nearby (Picture + Geotag
+                        option):</label>
+                    <input type="file" id="electric_poles_picture" name="electric_poles_picture">
+                </div>
+
+                <label for="electric_poles_map">Pin-point Electric Poles Location:</label>
+                <input type="text" id="electric_poles_map_coordinate" name="electric_poles_map_coordinate" placeholder="Pin-point on map" readonly>
+                <div id="electric_poles_map"></div>
+            </fieldset>
+   
+   
+             <fieldset>
+                <legend>On Street Vehicle Parking</legend>
+                <div class="form-group">
+                    <label>12. Is there on street vehicle parking in proximity?</label>
+                    <input type="radio" id="on_street_vehicle_parking_none" name="on_street_vehicle_parking" value="None" required>
+                    <label for="on_street_vehicle_parking_none">None</label><br>
+                    <input type="radio" id="on_street_vehicle_parking_one" name="on_street_vehicle_parking" value="One-Side">
+                    <label for="on_street_vehicle_parking_one">One Side</label><br>
+                    <input type="radio" id="on_street_vehicle_parking_both" name="on_street_vehicle_parking" value="Both-Side">
+                    <label for="on_street_vehicle_parking_both">Both Side</label>
+                </div>
+
+                <div id="on_street_vehicle_parking_detail" class="hidden">
+                    <div class="form-group">
+                        <label for="on_street_vehicle_parking_pictures">Picture of the Vehicle Parking:</label>
+                        <input type="file" id="on_street_vehicle_parking_pictures" name="on_street_vehicle_parking_pictures[]" multiple>
+                    </div>
+
+                    <label for="on_street_vehicle_parking_map">Pin-point Foot-over Bridge Location:</label>
+                    <input type="text" id="on_street_vehicle_parking_map_coordinate" name="on_street_vehicle_parking_map_coordinate" placeholder="Pin-point on map" readonly>
+                    <div id="on_street_vehicle_parking_map"></div>
+                </div>
+            </fieldset>
+   
+            <fieldset>
+                <legend>Viability to Install the System</legend>
+                <div class="form-group">
+                    <label>15. Is it viable to install the system here?</label><br>
+                    <input type="radio" id="viable_yes" name="viable_installation" value="Yes" required>
+                    <label for="viable_yes">Yes</label>
+                    <input type="radio" id="viable_no" name="viable_installation" value="No">
+                    <label for="viable_no">No</label>
+                </div>
+                
+
+                <div id="viable_no_details" class="hidden">
+                    <label for="reason">Specify Reason:</label>
+                    <textarea id="reason" name="reason" rows="4"></textarea>
+                </div>
+            </fieldset>
+     <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        
+        // Initialize Google Maps and Leaflet maps
+   function initializeMap(mapId, inputId) {
+            const mapInstance = L.map(mapId).setView([27.7172, 85.3240], 13);
+
+            // Load and display tile layers (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(mapInstance);
+
+            // Marker variable to store the selected location
+            let marker;
+
+            // Function to update marker and coordinates on the map
+            function onMapClick(e) {
+                const { lat, lng } = e.latlng;
+
+                // If there's already a marker, remove it
+                if (marker) {
+                    mapInstance.removeLayer(marker);
+                }
+
+                // Add a new marker to the map at the clicked location
+                marker = L.marker([lat, lng]).addTo(mapInstance);
+
+                // Display the coordinates in the HTML
+                document.getElementById(inputId).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+            }
+
+            // Event listener for clicks on the map
+            mapInstance.on('click', onMapClick);
+        }
+
+
+        // Event listeners for form sections
+        document.querySelectorAll('input[name="zebra_crossings"]').forEach((input) => {
+            input.addEventListener('change', function () {
+                document.getElementById('zebra_crossings_details').classList.toggle('hidden', this.value !== 'Yes');
+                if (this.value === 'Yes') {
+                    initializeMap('zebraMap','ZebraMapCoordinate');
+                }
+            });
+        });
+
+        document.querySelectorAll('input[name="foot_over_bridge"]').forEach((input) => {
+            input.addEventListener('change', function () {
+                document.getElementById('foot_over_bridge_details').classList.toggle('hidden', this.value !== 'Yes');
+                if (this.value === 'Yes') {
+                    initializeMap('foot_over_bridge_map','foot_over_bridge_map_coordinate');
+                }
+            });
+        });
+        
+        document.querySelectorAll('input[name="on_street_vehicle_parking"]').forEach((input) => {
+            input.addEventListener('change', function () {
+                document.getElementById('on_street_vehicle_parking_detail').classList.toggle('hidden', this.value === 'None');
+                if (this.value !== 'None') {
+                    initializeMap('on_street_vehicle_parking_map','on_street_vehicle_parking_map_coordinate');
+                }
+            });
+        });
+
+        document.querySelectorAll('input[name="electric_poles"]').forEach((input) => {
+            input.addEventListener('change', function () {
+                document.getElementById('electric_poles_details').classList.toggle('hidden', this.value !== 'Yes');
+                if (this.value === 'Yes') {
+                    initializeMap('electric_poles_map','electric_poles_map_coordinate');
+                }
+            });
+        });
+
+
+       function loadBlockOne(){
+            document.getElementById("width_one_block").classList.remove('hidden')
+            document.getElementById("width_two_block").classList.add('hidden')
+
+        }
+
+        function loadBlockTwo(){
+            document.getElementById("width_one_block").classList.remove('hidden')
+            document.getElementById("width_two_block").classList.remove('hidden')
+        }
+
+        function loadBlockNone(){
+            document.getElementById("width_one_block").classList.add('hidden')
+            document.getElementById("width_two_block").classList.add('hidden')
+        }
+
+        function trafficLightExist(){
+           document.getElementById("traffic_lights_details").classList.remove('hidden')
+        }
+
+        function trafficLightNotExist(){
+           document.getElementById("traffic_lights_details").classList.add('hidden')
+        }
+    </script>
+{%  endblock %}

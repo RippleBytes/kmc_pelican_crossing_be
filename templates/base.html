@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Information Form</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Link to your external CSS file -->
+    <link rel="stylesheet" href="{% static "style.css" %}">
+    {%  block head %}
+        
+    {%  endblock %}
+</head>
+<body>
+
+    {% block content %}
+
+    {% endblock %}
+ <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Your Script -->
+</body>
+
+</html>
