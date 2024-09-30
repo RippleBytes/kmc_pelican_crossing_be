@@ -6,5 +6,6 @@ urlpatterns = [
     path('roadway-far/', views.roadway_far_from_school_submission, name='roadway_far_from_school_submission'),
 
     path('initial/', views.school_form_view, name='school_form'),
+    path('finalize/', views.finalize_form_view, name='finalize'),
     path('complete/', views.complete, name='complete'),
 ]

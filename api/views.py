@@ -409,5 +409,9 @@ def school_form_view(request):
     return render(request, 'school_form.html')
 
 
+
+def finalize_form_view(request):
+    return render(request, 'finalization_form.html')
+
 def complete(request):
     return render(request, 'success.html')
