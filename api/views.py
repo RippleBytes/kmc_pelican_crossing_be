@@ -11,7 +11,13 @@ def roadway_near_school_submission(request):
         # Collecting Roadway Information
         school_id = request.POST['schoolId']
         carriage_width = request.POST.get('carriage_width')
-        carriage_direction = request.POST.get('carriage_way_direction')
+        carriage_way_direction = request.POST.get('carriage_way_direction')
+        carriage_direction = request.POST.get('carriage_direction')
+        partial_one_way = request.POST.get('partial_one_way')
+        partial_two_way = request.POST.get('partial_two_way')
+        partial_start_time = request.POST.get('partial_start_time')
+        partial_end_time = request.POST.get('partial_end_time')
+
         divided_undivided = request.POST.get('divided_undivided')
         intersection_type = request.POST.get('intersection_type')
         num_lanes = request.POST.get('num_lanes')
@@ -33,7 +39,9 @@ def roadway_near_school_submission(request):
         traffic_lights = request.POST.get('traffic_lights')
         traffic_lights_working = request.POST.get('traffic_lights_working')
         num_traffic_lights = request.POST.get('num_traffic_lights')
-        traffic_lights_pictures = request.FILES.get('traffic_lights_pictures')
+        traffic_lights_pic1 = request.FILES.get('traffic_lights_pic1')
+        traffic_lights_pic2 = request.FILES.get('traffic_lights_pic12')
+        traffic_lights_pic3 = request.FILES.get('traffic_lights_pic3')
 
         # Zebra Crossings Information
         zebra_crossings = request.POST.get('zebra_crossings')
@@ -44,8 +52,12 @@ def roadway_near_school_submission(request):
         # Foot-over Bridge Information
         foot_over_bridge = request.POST.get('foot_over_bridge')
         num_foot_over_bridges = request.POST.get('num_foot_over_bridges')
-        foot_over_bridge_picture = request.FILES.get('foot_over_bridge_picture')
-        foot_over_bridge_map_coordinate = request.POST.get('foot_over_bridge_map_coordinate')
+        foot_over_bridge_picture1 = request.FILES.get('foot_over_bridge_picture1')
+        foot_over_bridge_picture2 = request.FILES.get('foot_over_bridge_picture2')
+        foot_over_bridge_picture3 = request.FILES.get('foot_over_bridge_picture3')
+        foot_over_bridge_map_coordinate1 = request.POST.get('foot_over_bridge_map_coordinate1')
+        foot_over_bridge_map_coordinate2 = request.POST.get('foot_over_bridge_map_coordinate2')
+        foot_over_bridge_map_coordinate3 = request.POST.get('foot_over_bridge_map_coordinate3')
 
         # Electrical Infrastructure Information
         power_source = request.POST.get('power_source')
@@ -69,6 +81,7 @@ def roadway_near_school_submission(request):
         rf = RoadwayFacilityNear(
             school=School.objects.get(pk=school_id),
             carriage_width=carriage_width,
+            carriage_way_direction=carriage_way_direction,
             carriage_direction=carriage_direction,
             divided=divided_undivided,
             intersection_type=intersection_type,
@@ -83,7 +96,6 @@ def roadway_near_school_submission(request):
             traffic_lights=traffic_lights,
             traffic_lights_working=traffic_lights_working,
             num_traffic_lights=num_traffic_lights,
-            traffic_lights_pictures=traffic_lights_pictures,
 
             zebra_crossings=zebra_crossings,
             num_zebra_crossings=num_zebra_crossings,
@@ -91,7 +103,6 @@ def roadway_near_school_submission(request):
 
             foot_over_bridge=foot_over_bridge,
             num_foot_over_bridges=num_foot_over_bridges,
-            foot_over_bridge_picture=foot_over_bridge_picture,
 
             power_source=power_source,
             power_source_picture=power_source_pictures,
@@ -102,6 +113,45 @@ def roadway_near_school_submission(request):
             viable_installation=viable_installation,
             reason=reason
         )
+
+        if rf.carriage_way_direction == 'One-Way' and partial_one_way:
+            rf.partial_one_way = True
+            rf.partial_start_time = partial_start_time
+        elif rf.carriage_way_direction == 'Two-Way' and partial_two_way:
+            rf.partial_two_way = True
+            rf.partial_end_time = partial_end_time
+
+        if rf.traffic_lights == 'Yes' and rf.num_traffic_lights == 1:
+            rf.traffic_lights_pic_one = traffic_lights_pic1
+        elif rf.traffic_lights == 'Yes' and rf.num_traffic_lights == 2:
+            rf.traffic_lights_pic_one = traffic_lights_pic1
+            rf.traffic_lights_pic2 = traffic_lights_pic2
+        elif rf.traffic_lights == 'Yes' and rf.num_traffic_lights == 3:
+            rf.traffic_lights_pic_one = traffic_lights_pic1
+            rf.traffic_lights_pic2 = traffic_lights_pic2
+            rf.traffic_lights_pic3 = traffic_lights_pic3
+
+        if rf.foot_over_bridge == 'Yes' and rf.num_foot_over_bridges == 1:
+            rf.foot_over_bridge_pic_one = foot_over_bridge_picture1
+            rf.foot_over_bridge_one_latitude, rf.foot_over_bridge_one_longitude = \
+                str(foot_over_bridge_map_coordinate1).split(",")
+        elif rf.foot_over_bridge == 'Yes' and rf.num_foot_over_bridges == 2:
+            rf.foot_over_bridge_pic_one = foot_over_bridge_picture1
+            rf.foot_over_bridge_pic_two = foot_over_bridge_picture2
+            rf.foot_over_bridge_one_latitude, rf.foot_over_bridge_one_longitude = \
+                str(foot_over_bridge_map_coordinate1).split(",")
+            rf.foot_over_bridge_two_latitude, rf.foot_over_bridge_two_longitude = \
+                str(foot_over_bridge_map_coordinate2).split(",")
+        elif rf.foot_over_bridge == 'Yes' and rf.num_foot_over_bridges == 3:
+            rf.foot_over_bridge_pic_one = foot_over_bridge_picture1
+            rf.foot_over_bridge_pic_two = foot_over_bridge_picture2
+            rf.foot_over_bridge_pic_three = foot_over_bridge_picture3
+            rf.foot_over_bridge_one_latitude, rf.foot_over_bridge_one_longitude = \
+                str(foot_over_bridge_map_coordinate1).split(",")
+            rf.foot_over_bridge_two_latitude, rf.foot_over_bridge_two_longitude = \
+                str(foot_over_bridge_map_coordinate2).split(",")
+            rf.foot_over_bridge_three_latitude, rf.foot_over_bridge_three_longitude = \
+                str(foot_over_bridge_map_coordinate3).split(",")
 
         if rf.footpath == 'Two-Side':
             rf.width_side_one = width_side_one
@@ -116,14 +166,15 @@ def roadway_near_school_submission(request):
         if on_street_vehicle_parking_pictures is not None:
             if rf.on_street_vehicle_parking == 'One-Side' and len(on_street_vehicle_parking_pictures) == 1:
                 rf.street_side_one = on_street_vehicle_parking_pictures[0]
-            elif rf.on_street_vehicle_parking == 'Both-Side'and len(on_street_vehicle_parking_pictures) == 2:
+            elif rf.on_street_vehicle_parking == 'Both-Side' and len(on_street_vehicle_parking_pictures) == 2:
                 rf.street_side_one = on_street_vehicle_parking_pictures[0]
                 rf.street_side_two = on_street_vehicle_parking_pictures[1]
 
         rf.save()
 
         # Return a simple HttpResponse or render to a template
-        return redirect('roadway_far_from_school_submission')
+        if rf.viable_installation == 'NO':
+            return redirect('roadway_far_from_school_submission')
 
     school_list = School.objects.all()
     # Render the form if GET request
@@ -136,7 +187,13 @@ def roadway_far_from_school_submission(request):
         # Collecting Roadway Information
         school_id = request.POST['schoolId']
         carriage_width = request.POST.get('carriage_width')
-        carriage_direction = request.POST.get('carriage_way_direction')
+        carriage_way_direction = request.POST.get('carriage_way_direction')
+        carriage_direction = request.POST.get('carriage_direction')
+        partial_one_way = request.POST.get('partial_one_way')
+        partial_two_way = request.POST.get('partial_two_way')
+        partial_start_time = request.POST.get('partial_start_time')
+        partial_end_time = request.POST.get('partial_end_time')
+
         divided_undivided = request.POST.get('divided_undivided')
         intersection_type = request.POST.get('intersection_type')
         num_lanes = request.POST.get('num_lanes')
@@ -158,8 +215,9 @@ def roadway_far_from_school_submission(request):
         traffic_lights = request.POST.get('traffic_lights')
         traffic_lights_working = request.POST.get('traffic_lights_working')
         num_traffic_lights = request.POST.get('num_traffic_lights')
-        traffic_lights_pictures = request.FILES.get('traffic_lights_pictures')
-
+        traffic_lights_pic1 = request.FILES.get('traffic_lights_pic1')
+        traffic_lights_pic2 = request.FILES.get('traffic_lights_pic12')
+        traffic_lights_pic3 = request.FILES.get('traffic_lights_pic3')
         # Zebra Crossings Information
         zebra_crossings = request.POST.get('zebra_crossings')
         num_zebra_crossings = request.POST.get('num_zebra_crossings')
@@ -169,8 +227,12 @@ def roadway_far_from_school_submission(request):
         # Foot-over Bridge Information
         foot_over_bridge = request.POST.get('foot_over_bridge')
         num_foot_over_bridges = request.POST.get('num_foot_over_bridges')
-        foot_over_bridge_picture = request.FILES.get('foot_over_bridge_picture')
-        foot_over_bridge_map_coordinate = request.POST.get('foot_over_bridge_map_coordinate')
+        foot_over_bridge_picture1 = request.FILES.get('foot_over_bridge_picture1')
+        foot_over_bridge_picture2 = request.FILES.get('foot_over_bridge_picture2')
+        foot_over_bridge_picture3 = request.FILES.get('foot_over_bridge_picture3')
+        foot_over_bridge_map_coordinate1 = request.POST.get('foot_over_bridge_map_coordinate1')
+        foot_over_bridge_map_coordinate2 = request.POST.get('foot_over_bridge_map_coordinate2')
+        foot_over_bridge_map_coordinate3 = request.POST.get('foot_over_bridge_map_coordinate3')
 
         # Electrical Infrastructure Information
         power_source = request.POST.get('power_source')
@@ -194,6 +256,7 @@ def roadway_far_from_school_submission(request):
         rf = RoadwayFacilityFar(
             school=School.objects.get(pk=school_id),
             carriage_width=carriage_width,
+            carriage_way_direction=carriage_way_direction,
             carriage_direction=carriage_direction,
             divided=divided_undivided,
             intersection_type=intersection_type,
@@ -287,7 +350,6 @@ def school_form_view(request):
         pick_location = request.POST.get('pickLocation') or None
         drop_location = request.POST.get('dropLocation') or None
 
-
         # Save the school object
         school = School(
             school_name=school_name,
@@ -307,7 +369,7 @@ def school_form_view(request):
             opening_time_summer=opening_time_summer,
             closing_time_summer=closing_time_summer,
             opening_time_winter=opening_time_winter,
-            closing_time_winter=closing_time_winter
+            closing_time_winter=closing_time_winter,
         )
 
         if pick_location is not None:

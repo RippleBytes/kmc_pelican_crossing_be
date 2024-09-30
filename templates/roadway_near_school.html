@@ -38,62 +38,53 @@
             </select>
 
             <div id="twoway" class="hidden">
-                <input type="radio" id="North-South" name="carriage_way_direction" value="North-South" required>
+                <input type="radio" id="North-South" name="carriage_way_direction_two_way" value="North-South" required>
                 <label for="North-South">North-South</label><br>
 
-                <input type="radio" id="East-West" name="carriage_way_direction" value="East-West">
+                <input type="radio" id="East-West" name="carriage_way_direction_two_way" value="East-West">
                 <label for="East-West">East-West</label><br>
                 <br>
 
                 <label for="Patial_Two_way">Partial Two Way </label>
-                <input type="radio" id="Partial_Two_way_yes" name="Partial_Two_way" value="Yes"
-                    onclick="loadBlockPartialTwo();">
+                <input type="radio" id="Partial_Two_way_yes" name="partial_two_way" value="Yes"
+                    onclick="loadBlockPartialYes();">
                 <label for="Patial_Two_way_yes">Yes</label>
 
-                <input type="radio" id="Partial_Two_way_no" name="Partial_Two_way" value="No"
-                    onclick="loadBlockPartialTwoNo();">
+                <input type="radio" id="Partial_Two_way_no" name="partial_two_way" value="No"
+                    onclick="loadBlockPartialNo();">
                 <label for="Patial_Two_way_no">No</label>
 
             </div>
 
             <div id="oneway" class="hidden">
-                <input type="radio" id="North" name="carriage_way_direction" value="North">
+                <input type="radio" id="North" name="carriage_way_direction_oneway" value="North">
                 <label for="North">North</label><br>
 
-                <input type="radio" id="South" name="carriage_way_direction" value="South">
+                <input type="radio" id="South" name="carriage_way_direction_oneway" value="South">
                 <label for="South">South</label><br>
 
-                <input type="radio" id="East" name="carriage_way_direction" value="East">
+                <input type="radio" id="East" name="carriage_way_direction_oneway" value="East">
                 <label for="East">East</label><br>
 
-                <input type="radio" id="West" name="carriage_way_direction" value="West">
+                <input type="radio" id="West" name="carriage_way_direction_oneway" value="West">
                 <label for="West">West</label><br><br>
 
                 <label for="Patial_One_way">Partial One Way </label>
-                <input type="radio" id="Partial_One_way_yes" name="Partial_One_way" value="Yes"
-                    onclick="loadBlockPartialOne();">
+                <input type="radio" id="Partial_One_way_yes" name="partial_one_way" value="Yes"
+                    onclick="loadBlockPartialYes();">
                 <label for="Patial_One_way_yes">Yes</label>
 
-                <input type="radio" id="Partial_One_way_no" name="Partial_One_way" value="No"
-                    onclick="loadBlockPartialOneNo();">
+                <input type="radio" id="Partial_One_way_no" name="partial_one_way" value="No"
+                    onclick="loadBlockPartialNo();">
                 <label for="Patial_One_way_no">No</label>
 
             </div>
-            <div id="partialoneway" class="hidden">
-                <label for="partialonewayopeningTime">Start Time</label>
-                <input type="time" name="Partial_One_Way_Time_Start_Time" id="Partial_One_Way_Time_Start_Time" />
+            <div id="partial_time" class="hidden">
+                <label for="Partial_One_Way_Time_Start_Time">Start Time</label>
+                <input type="time" name="partial_start_time" id="Partial_One_Way_Time_Start_Time" />
 
-                <label for="closingTime">Close Time</label>
-                <input type="time" name="Partial_One_Way_Time_Close_Time" id="Partial_One_Way_Time_Close_Time" />
-            </div>
-
-            <div id="partialtwoway" class="hidden">
-                <label for="partialtwowaystarttime">Start Time</label>
-                <input type="time" name="Partial_Two_Way_Time_Start_Time" id="Partial_Two_Way_Time_Start_Time" />
-
-                <label for="partialtwowayclosingtime">Close Time</label>
-                <input type="time" name="Partial_Two_Way_Time_Close_Time" id="Partial_Two_Way_Time_Close_Time" />
-
+                <label for="Partial_One_Way_Time_Close_Time">Close Time</label>
+                <input type="time" name="partial_end_time" id="Partial_One_Way_Time_Close_Time" />
             </div>
 
         </div>
@@ -176,7 +167,7 @@
             {# </div>#}
 
         <div class="form-group">
-            <img src="/media/gate.png"><br><br>
+            <img src="{% static "/media/gate.png" %}}"><br><br>
             <label for="pictures_near_side">8. From near-side looking into far-side:</label>
             <input type="file" id="pictures_near_side" name="pictures_near_side"><br>
             <label for="pictures_far_side">9. From far-side looking into near-side:</label>
@@ -317,8 +308,10 @@
                 <input type="text" id="foot_over_bridge_map_coordinate2" name="foot_over_bridge_map_coordinate2"
                     placeholder="Pin-point on map" readonly>
                 <div id="foot_over_bridge_map2"></div> <br>
+            </div>
 
-                <div class="form-group"></div>
+            <div id="footover3" class="hidden">
+                          <div class="form-group"></div>
                 <label for="foot_over_bridge_picture">Picture of the Facility 2:</label>
                 <input type="file" id="foot_over_bridge_picture2" name="foot_over_bridge_picture2"><br>
 
@@ -327,38 +320,6 @@
                 <input type="text" id="foot_over_bridge_map_coordinate3" name="foot_over_bridge_map_coordinate3"
                     placeholder="Pin-point on map" readonly>
                 <div id="foot_over_bridge_map3"></div> <br>
-            </div>
-
-            <div id="footover3" class="hidden">
-                <div class="form-group">
-                    <label for="foot_over_bridge_picture">Picture of the Facility 1:</label>
-                    <input type="file" id="foot_over_bridge_picture4" name="foot_over_bridge_picture4">
-                </div>
-
-                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 1:</label>
-                <input type="text" id="foot_over_bridge_map_coordinate4" name="foot_over_bridge_map_coordinate4"
-                    placeholder="Pin-point on map" readonly>
-                <div id="foot_over_bridge_map4"></div> <br>
-
-                <div class="form-group"></div>
-                <label for="foot_over_bridge_picture">Picture of the Facility 2:</label>
-                <input type="file" id="foot_over_bridge_picture5" name="foot_over_bridge_picture5">
-
-
-                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 2:</label>
-                <input type="text" id="foot_over_bridge_map_coordinate5" name="foot_over_bridge_map_coordinate5"
-                    placeholder="Pin-point on map" readonly>
-                <div id="foot_over_bridge_map5"></div> <br>
-
-                <div class="form-group"></div>
-                <label for="foot_over_bridge_picture">Picture of the Facility 3:</label>
-                <input type="file" id="foot_over_bridge_picture6" name="foot_over_bridge_picture6">
-
-
-                <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 3:</label>
-                <input type="text" id="foot_over_bridge_map_coordinate6" name="foot_over_bridge_map_coordinate6"
-                    placeholder="Pin-point on map" readonly>
-                <div id="foot_over_bridge_map6"></div>
             </div>
         </div>
     </fieldset>
@@ -483,7 +444,9 @@
         input.addEventListener('change', function () {
             document.getElementById('foot_over_bridge_details').classList.toggle('hidden', this.value !== 'Yes');
             if (this.value === 'Yes') {
-                initializeMap('foot_over_bridge_map1', 'foot_over_bridge_map_coordinate1', 'foot_over_bridge_map2', 'foot_over_bridge_map_coordinate2', 'foot_over_bridge_map3', 'foot_over_bridge_map_coordinate3', 'foot_over_bridge_map4', 'foot_over_bridge_map_coordinate4', 'foot_over_bridge_map5', 'foot_over_bridge_map_coordinate5', 'foot_over_bridge_map6', 'foot_over_bridge_map_coordinate6');
+                initializeMap('foot_over_bridge_map1', 'foot_over_bridge_map_coordinate1')
+                initializeMap('foot_over_bridge_map2', 'foot_over_bridge_map_coordinate2')
+                initializeMap('foot_over_bridge_map3', 'foot_over_bridge_map_coordinate3')
             }
         });
     });
@@ -522,23 +485,14 @@
         document.getElementById("width_one_block").classList.add('hidden')
         document.getElementById("width_two_block").classList.add('hidden')
     }
-    function loadBlockPartialOne() {
-        document.getElementById("partialoneway").classList.remove('hidden')
+    function loadBlockPartialYes() {
+        document.getElementById("partial_time").classList.remove('hidden')
     }
 
-    function loadBlockPartialOneNo() {
-        document.getElementById("partialoneway").classList.add('hidden')
-
+    function loadBlockPartialNo() {
+        document.getElementById("partial_time").classList.add('hidden')
     }
-
-    function loadBlockPartialTwo() {
-        document.getElementById("partialtwoway").classList.remove('hidden')
-    }
-
-    function loadBlockPartialTwoNo() {
-        document.getElementById("partialtwoway").classList.add('hidden')
-
-    }
+    
 
     function trafficLightExist() {
         document.getElementById("traffic_lights_details").classList.remove('hidden')
@@ -575,15 +529,17 @@
             footover3.classList.add('hidden');
 
         } else if (this.value === 'Two') {
-            footover1.classList.add('hidden');
+            footover1.classList.remove('hidden');
             footover2.classList.remove('hidden');
             footover3.classList.add('hidden');
-        }
-        else {
+        } else if (this.value === 'Three') {
+            footover1.classList.remove('hidden');
+            footover2.classList.remove('hidden');
+            footover3.classList.remove('hidden');
+        }else{
             footover1.classList.add('hidden');
             footover2.classList.add('hidden');
-            footover3.classList.remove('hidden');
-
+            footover3.classList.add('hidden');
         }
     });
 
