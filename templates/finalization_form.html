@@ -57,8 +57,58 @@
         </div>
     </fieldset>
 
+    <fieldset>
+        <legend>Near Side: </legend>
+        <div class="form-group">
+            <input type="text" id="nearSideCoordinates" name="nearSideCoordinates" placeholder="Pin-point on map"
+                readonly>
+            <!-- Map Display -->
+            <div id="nearsidemap"></div>
+
+            <input type="file" id="near_side_picture" name="near_side_picture"><br>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Far Side: </legend>
+        <div class="form-group">
+            <input type="text" id="farSideCoordinates" name="farSideCoordinates" placeholder="Pin-point on map"
+                readonly>
+            <!-- Map Display -->
+            <div id="farsidemap"></div>
+
+            <input type="file" id="far_side_picture" name="far_side_picture"><br>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Zebra Crossings</legend>
+        <div class="form-group">
+            <label>Are there zebra crossings?</label>
+            <input type="radio" id="zebra_crossings_yes" name="zebra_crossings" value="Yes" required>
+            <label for="zebra_crossings_yes">Yes</label>
+            <input type="radio" id="zebra_crossings_no" name="zebra_crossings" value="No">
+            <label for="zebra_crossings_no">No</label>
+        </div>
+
+
+    </fieldset>
+
+    <fieldset>
+        <legend>Viable Source of Power and Placement of Inverter + Battery Cabinet:</legend>
+        <div class="form-group">
+            <textarea id="viabletext" name="viabletext" rows="10" cols="50">
+
+            </textarea>
+        </div>
+
+    </fieldset>
+
+
     <button type="submit">Submit</button>
 </form>
-
+<script>
+    initializeMap('nearsidemap', 'nearSideCoordinates');
+</script>
 
 {% endblock %}
