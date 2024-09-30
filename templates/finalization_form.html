@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Finalization Form</h1>
+<form action="{% url 'roadway_form_submission' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="schoolName">Choose School Name:</label>
+    <select id="schoolName" name="schoolId" required>
+        {% for x in data %}
+        <option value="{{ x.id }}">{{ x }}</option>
+        {% endfor %}
+
+    </select>
+
+    <fieldset>
+        <legend>Carriage-Way Width:</legend>
+        <div class="form-group">
+
+            <input type="text" id="power_source" name="power_source">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Footpath Information: </legend>
+        <div class="form-group">
+            <input type="text" id="power_source" name="power_source">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Zebra Crossing (In Proximity) Information:</legend>
+        <div class="form-group">
+            <input type="text" id="power_source" name="power_source">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Electrical Infrastructure Information: </legend>
+        <div class="form-group">
+            <input type="text" id="power_source" name="power_source">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Traffic Direction: </legend>
+        <div class="form-group">
+            <input type="text" id="power_source" name="power_source">
+        </div>
+    </fieldset>
+
+    <button type="submit">Submit</button>
+</form>
+
+
+{% endblock %}
