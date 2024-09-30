@@ -173,8 +173,11 @@ def roadway_near_school_submission(request):
         rf.save()
 
         # Return a simple HttpResponse or render to a template
-        if rf.viable_installation == 'NO':
-            return redirect('roadway_far_from_school_submission')
+        if rf.viable_installation == 'Yes':
+            return redirect('finalize')
+
+        return redirect('roadway_far_from_school_submission')
+
 
     school_list = School.objects.all()
     # Render the form if GET request
@@ -411,7 +414,8 @@ def school_form_view(request):
 
 
 def finalize_form_view(request):
-    return render(request, 'finalization_form.html')
+    school_list = School.objects.all()
+    return render(request, 'finalization_form.html', {"data": school_list})
 
 def complete(request):
     return render(request, 'success.html')
