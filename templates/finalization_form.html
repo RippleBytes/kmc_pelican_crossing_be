@@ -10,58 +10,130 @@
 
 {% block content %}
 <h1>Finalization Form</h1>
-<form action="{% url 'roadway_form_submission' %}" method="post" enctype="multipart/form-data">
+<form action="{% url 'finalize' school_id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <label for="schoolName">Choose School Name:</label>
     <select id="schoolName" name="schoolId" required>
-        {% for x in data %}
+        {% for x in school %}
         <option value="{{ x.id }}">{{ x }}</option>
         {% endfor %}
 
     </select>
 
+
+
     <fieldset>
         <legend>Carriage-Way Width:</legend>
         <div class="form-group">
-
-            <input type="text" id="power_source" name="power_source">
+            {% if data.is_near_side %}
+                {{ data.data_near.carriage_width }}
+            {% else %}
+                {{ data.data_far.carriage_width }}
+            {% endif %}
         </div>
     </fieldset>
 
     <fieldset>
         <legend>Footpath Information: </legend>
         <div class="form-group">
-            <input type="text" id="power_source" name="power_source">
+            {% if data.is_near_side %}
+                {{ data.data_near.footpath }}
+            {% else %}
+                 {{ data.data_far.footpath }}
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {% if data.is_near_side %}
+                Width Side One : {{ data.data_near.width_side_one }}<br>
+                Width Side Two :  {{ data.data_near.width_side_two }}
+            {% else %}
+                Width Side One : {{ data.data_far.width_side_one }}<br>
+                Width Side Two :  {{ data.data_far.width_side_two }}
+            {% endif %}
+            <br>
         </div>
     </fieldset>
 
     <fieldset>
         <legend>Zebra Crossing (In Proximity) Information:</legend>
-        <div class="form-group">
-            <input type="text" id="power_source" name="power_source">
-        </div>
+            {% if data.is_near_side %}
+                Zebra crossing Available :  {{ data.data_near.zebra_crossings }}<br>
+                Number of Zebra crossing :  {{ data.data_near.num_zebra_crossings }}<br>
+                Width of Zebra crossing :  {{ data.data_near.zebra_width }}<br>
+                Latitude of Zebra crossing :  {{ data.data_near.zebra_crossings_latitude }}<br>
+                Longitude of Zebra crossing :  {{ data.data_near.zebra_crossings_longitude }}<br>
+
+            {% else %}
+                Zebra crossing Available :  {{ data.data_far.zebra_crossings }}<br>
+                Number of Zebra crossing :  {{ data.data_far.num_zebra_crossings }}<br>
+                Width of Zebra crossing :  {{ data.data_far.zebra_width }}<br>
+                Latitude of Zebra crossing :  {{ data.data_far.zebra_crossings_latitude }}<br>
+                Longitude of Zebra crossing :  {{ data.data_far.zebra_crossings_longitude }}<br>
+            {% endif %}
     </fieldset>
 
     <fieldset>
         <legend>Electrical Infrastructure Information: </legend>
-        <div class="form-group">
-            <input type="text" id="power_source" name="power_source">
-        </div>
+         {% if data.is_near_side %}
+                Power Source : {{ data.data_near.power_source }}<br>
+                 {% if data.data_near.power_source_picture %}
+                    Power Source Picture :   <img src="{{ data.data_near.power_source_picture.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+                {% if data.data_near.electric_poles_picture %}
+                    Electric Pole Picture :  <img src="{{ data.data_near.electric_poles_picture.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+                Pole Latitude :  {{ data.data_near.electric_poles_latitude }}
+                Pole Longitude :  {{ data.data_near.electric_poles_longitude }}
+            {% else %}
+                Power Source : {{ data.data_far.power_source }}<br>
+                {% if data.data_far.power_source_picture %}
+                    Power Source Picture :  <img src=" {{ data.data_far.power_source_picture.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+                {% if data.data_far.electric_poles_picture %}
+                    Electric Pole Picture :  <img src="{{ data.data_far.electric_poles_picture.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+                Pole Latitude :  {{ data.data_far.electric_poles_latitude }}<br>
+                Pole Longitude :  {{ data.data_far.electric_poles_longitude }}<br>
+            {% endif %}
     </fieldset>
 
     <fieldset>
         <legend>Traffic Direction: </legend>
-        <div class="form-group">
-            <input type="text" id="power_source" name="power_source">
-        </div>
+         {% if data.is_near_side %}
+                Traffic Lights : {{ data.data_near.traffic_lights }}<br>
+                Number of Traffic Lights : {{ data.data_near.num_traffic_lights }}<br>
+                Is Traffic Lights Working  : {{ data.data_near.traffic_lights_working }}<br>
+                 {% if data.data_near.traffic_lights_pic_one %}
+                    Picture One :   <img src="{{ data.data_near.traffic_lights_pic_one.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+                {% if data.data_near.traffic_lights_pic_two %}
+                    Picture Two :   <img src="{{ data.data_near.traffic_lights_pic_two.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+                {% if data.data_near.traffic_lights_pic_three %}
+                    Picture Three :   <img src="{{ data.data_near.traffic_lights_pic_three.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+            {% else %}
+                Traffic Lights : {{ data.data_far.traffic_lights }}<br>
+                Number of Traffic Lights : {{ data.data_far.num_traffic_lights }}<br>
+                Is Traffic Lights Working  : {{ data.data_far.traffic_lights_working }}<br>
+                 {% if data.data_far.traffic_lights_pic_one %}
+                    Picture One :   <img src="{{ data.data_far.traffic_lights_pic_one.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+                {% if data.data_far.traffic_lights_pic_two %}
+                    Picture Two :   <img src="{{ data.data_far.traffic_lights_pic_two.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+                {% if data.data_far.traffic_lights_pic_three %}
+                    Picture Three :   <img src="{{ data.data_far.traffic_lights_pic_three.url }}" height="200" width="400"/><br><br>
+                {% endif %}
+            {% endif %}
     </fieldset>
 
     <fieldset>
         <legend>Near Side: </legend>
         <div class="form-group">
-            <input type="text" id="nearSideCoordinates" name="nearSideCoordinates" placeholder="Pin-point on map"
-                readonly>
+            <input type="text" id="nearSideCoordinates" name="nearSideCoordinates" placeholder="Pin-point on map" readonly>
             <!-- Map Display -->
             <div id="nearsidemap"></div>
 
@@ -107,8 +179,75 @@
 
     <button type="submit">Submit</button>
 </form>
-<script>
+    
+        <!-- Leaflet JS -->
+ <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+         crossorigin=""></script>
+  <!-- Your Script -->
+    <script>
+        // Initialize the map and set its view to a default location (e.g., Kathmandu)
+        function initializeMap(mapId, inputId) {
+
+
+            const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            });
+
+            const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
+            });
+
+            const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
+
+            const mapInstance = L.map(mapId, {
+                center: [38.715755604432346, -9.141667043719174],
+                zoom: 17,
+                layers: [osm, osmHOT, Esri_WorldImagery]
+            });
+
+            const baseMaps = {
+                "OpenStreetMap": osm,
+                "OpenStreetMap.HOT": osmHOT,
+                "Esri_WorldImagery": Esri_WorldImagery
+            };
+
+
+            const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
+
+            mapInstance.locate({setView: true, maxZoom: 20});
+
+            // Marker variable to store the selected location
+            let marker;
+
+            // Function to update marker and coordinates on the map
+            function onMapClick(e) {
+                const { lat, lng } = e.latlng;
+
+                // If there's already a marker, remove it
+                if (marker) {
+                    mapInstance.removeLayer(marker);
+                }
+
+                // Add a new marker to the map at the clicked location
+                marker = L.marker([lat, lng]).addTo(mapInstance);
+
+                // Display the coordinates in the HTML
+                document.getElementById(inputId).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+            }
+
+            // Event listener for clicks on the map
+            mapInstance.on('click', onMapClick);
+        }
+
     initializeMap('nearsidemap', 'nearSideCoordinates');
+    initializeMap('farsidemap', 'farSideCoordinates')
 </script>
 
 {% endblock %}
