@@ -441,8 +441,6 @@ def school_form_view(request):
             opening_time_winter = request.POST.get('openingTimeWinter')
             closing_time_winter = request.POST.get('closingTimeWinter')
 
-        s_latitude, s_longitude = str(school_coordinates).split(",")
-
         pick_location = request.POST.get('pickLocation') or None
         drop_location = request.POST.get('dropLocation') or None
 
@@ -453,8 +451,6 @@ def school_form_view(request):
             ward=ward,
             # entrance_image=entrance_image,
             multiple_entrances=multiple_entrances,
-            school_coordinates_latitude=s_latitude,
-            school_coordinates_longitude=s_longitude,
             bus_facility=bus_facility,
             bus_count=bus_count,
             bus_ownership=bus_ownership,
@@ -467,6 +463,9 @@ def school_form_view(request):
             opening_time_winter=opening_time_winter,
             closing_time_winter=closing_time_winter,
         )
+
+        if school_coordinates is not None and school_coordinates != "":
+            school.school_coordinates_latitude, school.school_coordinates_longitude = str(school_coordinates).split(",")
 
         if pick_location is not None:
             latitude, longitude = str(pick_location).split(",")
@@ -524,14 +523,15 @@ def finalize_form_view(request, school_id):
 
         return redirect(f'/complete/{school_id}')
     old_form = None
-    try:
-        old_form = FinalizationForm.objects.get(school_id=school_id)
-    except:
-        pass
+
     school_list = School.objects.filter(id=school_id)
     rf_near = RoadwayFacilityNear.objects.get(school_id=school_id)
     finalize_form = FinalizationForm()
-    finalize_form.id = old_form.id
+    try:
+        old_form = FinalizationForm.objects.get(school_id=school_id)
+        finalize_form.id = old_form.id
+    except:
+        pass
     finalize_form.school = school_list[0]
     if rf_near.viable_installation == 'Yes':
         finalize_form.is_near_side = True

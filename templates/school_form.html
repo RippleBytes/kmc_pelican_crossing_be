@@ -61,6 +61,7 @@
     <label for="schoolCoordinates">6. Coordinates of the School (Geometric Center):</label>
     <input type="text" id="schoolCoordinates" name="schoolCoordinates" placeholder="Pin-point on map" readonly>
      <!-- Map Display -->
+    <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
         <div id="map" ></div>
     <!-- School Bus/Shuttle Service Facility -->
     <label for="busFacility">7. School Bus/Shuttle Service Facility:</label>
@@ -174,6 +175,21 @@
 
             // Marker variable to store the selected location
             let marker;
+            
+             L.DomEvent.on(document.getElementById('btnGetLoc'), 'click', function(){
+                mapInstance.locate({setView: true, maxZoom: 18});
+              })
+        
+                function onLocationFound(e) {
+                    var radius = e.accuracy;
+                
+                    L.marker(e.latlng).addTo(map)
+                        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+                
+                    L.circle(e.latlng, radius).addTo(map);
+                }
+                
+                mapInstance.on('locationfound', onLocationFound);
 
             // Function to update marker and coordinates on the map
             function onMapClick(e) {
@@ -200,6 +216,8 @@
         initializeMap('busMap', 'busParkingLocation');
         initializeMap('pickUpMap', 'pickLocation');
         initializeMap('dropOffMap', 'dropLocation');
+        
+       
 
         // Show/Hide Bus Details if Bus Facility is available
         document.getElementById('busFacility').addEventListener('change', function () {

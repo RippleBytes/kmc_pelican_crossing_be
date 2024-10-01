@@ -79,20 +79,20 @@
          {% if data.is_near_side %}
                 Power Source : {{ data.data_near.power_source }}<br>
                  {% if data.data_near.power_source_picture %}
-                    Power Source Picture :   <img src="{{ data.data_near.power_source_picture.url }}" height="200" width="400"/><br><br>
+                    Power Source Picture :   <img src="{{ data.data_near.power_source_picture.url }}" height="150" width="300"/><br><br>
                 {% endif %}
                 {% if data.data_near.electric_poles_picture %}
-                    Electric Pole Picture :  <img src="{{ data.data_near.electric_poles_picture.url }}" height="200" width="400"/><br><br>
+                    Electric Pole Picture :  <img src="{{ data.data_near.electric_poles_picture.url }}" height="150" width="300"/><br><br>
                 {% endif %}
                 Pole Latitude :  {{ data.data_near.electric_poles_latitude }}
                 Pole Longitude :  {{ data.data_near.electric_poles_longitude }}
             {% else %}
                 Power Source : {{ data.data_far.power_source }}<br>
                 {% if data.data_far.power_source_picture %}
-                    Power Source Picture :  <img src=" {{ data.data_far.power_source_picture.url }}" height="200" width="400"/><br><br>
+                    Power Source Picture :  <img src=" {{ data.data_far.power_source_picture.url }}" height="150" width="300"/><br><br>
                 {% endif %}
                 {% if data.data_far.electric_poles_picture %}
-                    Electric Pole Picture :  <img src="{{ data.data_far.electric_poles_picture.url }}" height="200" width="400"/><br><br>
+                    Electric Pole Picture :  <img src="{{ data.data_far.electric_poles_picture.url }}" height="150" width="300"/><br><br>
                 {% endif %}
                 Pole Latitude :  {{ data.data_far.electric_poles_latitude }}<br>
                 Pole Longitude :  {{ data.data_far.electric_poles_longitude }}<br>
@@ -106,26 +106,26 @@
                 Number of Traffic Lights : {{ data.data_near.num_traffic_lights }}<br>
                 Is Traffic Lights Working  : {{ data.data_near.traffic_lights_working }}<br>
                  {% if data.data_near.traffic_lights_pic_one %}
-                    Picture One :   <img src="{{ data.data_near.traffic_lights_pic_one.url }}" height="200" width="400"/><br><br>
+                    Picture One :   <img src="{{ data.data_near.traffic_lights_pic_one.url }}" height="150" width="300"/><br><br>
                 {% endif %}
                 {% if data.data_near.traffic_lights_pic_two %}
-                    Picture Two :   <img src="{{ data.data_near.traffic_lights_pic_two.url }}" height="200" width="400"/><br><br>
+                    Picture Two :   <img src="{{ data.data_near.traffic_lights_pic_two.url }}" height="150" width="300"/><br><br>
                 {% endif %}
                 {% if data.data_near.traffic_lights_pic_three %}
-                    Picture Three :   <img src="{{ data.data_near.traffic_lights_pic_three.url }}" height="200" width="400"/><br><br>
+                    Picture Three :   <img src="{{ data.data_near.traffic_lights_pic_three.url }}" height="150" width="300"/><br><br>
                 {% endif %}
             {% else %}
                 Traffic Lights : {{ data.data_far.traffic_lights }}<br>
                 Number of Traffic Lights : {{ data.data_far.num_traffic_lights }}<br>
                 Is Traffic Lights Working  : {{ data.data_far.traffic_lights_working }}<br>
                  {% if data.data_far.traffic_lights_pic_one %}
-                    Picture One :   <img src="{{ data.data_far.traffic_lights_pic_one.url }}" height="200" width="400"/><br><br>
+                    Picture One :   <img src="{{ data.data_far.traffic_lights_pic_one.url }}" height="150" width="300"/><br><br>
                 {% endif %}
                 {% if data.data_far.traffic_lights_pic_two %}
-                    Picture Two :   <img src="{{ data.data_far.traffic_lights_pic_two.url }}" height="200" width="400"/><br><br>
+                    Picture Two :   <img src="{{ data.data_far.traffic_lights_pic_two.url }}" height="150" width="300"/><br><br>
                 {% endif %}
                 {% if data.data_far.traffic_lights_pic_three %}
-                    Picture Three :   <img src="{{ data.data_far.traffic_lights_pic_three.url }}" height="200" width="400"/><br><br>
+                    Picture Three :   <img src="{{ data.data_far.traffic_lights_pic_three.url }}" height="150" width="300"/><br><br>
                 {% endif %}
             {% endif %}
     </fieldset>
@@ -169,9 +169,7 @@
     <fieldset>
         <legend>Viable Source of Power and Placement of Inverter + Battery Cabinet:</legend>
         <div class="form-group">
-            <textarea id="viabletext" name="viabletext" rows="10" cols="50">
-
-            </textarea>
+            <textarea id="viabletext" name="viabletext" rows="10" cols="50"></textarea>
         </div>
 
     </fieldset>

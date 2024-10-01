@@ -367,9 +367,9 @@
             <input type="text" id="on_street_vehicle_parking_map_coordinate_one"
                 name="on_street_vehicle_parking_map_coordinate_one" placeholder="Pin-point on map" readonly>
             <div id="on_street_vehicle_parking_map_one"></div>
-            
+
         </div>
-        
+
         <div id="on_street_vehicle_parking_detail_two" class="hidden">
             <div class="form-group">
                 <label for="on_street_vehicle_parking_pictures_two">Picture of the Vehicle Parking:</label>
@@ -381,7 +381,7 @@
             <input type="text" id="on_street_vehicle_parking_map_coordinate_two"
                 name="on_street_vehicle_parking_map_coordinate_two" placeholder="Pin-point on map" readonly>
             <div id="on_street_vehicle_parking_map_two"></div>
-            
+
         </div>
     </fieldset>
 
@@ -468,7 +468,7 @@
             // Event listener for clicks on the map
             mapInstance.on('click', onMapClick);
         }
-    
+
     initializeMap('electric_poles_map', 'electric_poles_map_coordinate');
     initializeMap('zebraMap', 'ZebraMapCoordinate');
     initializeMap('foot_over_bridge_map1', 'foot_over_bridge_map_coordinate1')
@@ -481,7 +481,7 @@
         input.addEventListener('change', function () {
             document.getElementById('zebra_crossings_details').classList.toggle('hidden', this.value !== 'Yes');
             if (this.value === 'Yes') {
-                
+
             }
         });
     });
@@ -490,7 +490,7 @@
         input.addEventListener('change', function () {
             document.getElementById('foot_over_bridge_details').classList.toggle('hidden', this.value !== 'Yes');
             if (this.value === 'Yes') {
-                
+
             }
         });
     });
@@ -499,11 +499,11 @@
         input.addEventListener('change', function () {
             console.log(this.value)
             if (this.value === 'One-Side') {
-                
+
                 document.getElementById('on_street_vehicle_parking_detail_two').classList.add('hidden');
                 document.getElementById('on_street_vehicle_parking_detail_one').classList.remove('hidden');
             }else if (this.value === 'Both-Side'){
-                 
+
                  document.getElementById('on_street_vehicle_parking_detail_one').classList.remove('hidden');
                  document.getElementById('on_street_vehicle_parking_detail_two').classList.remove('hidden');
             }else{
@@ -516,21 +516,21 @@
      document.querySelectorAll('input[name="viable_installation"]').forEach((input) => {
         input.addEventListener('change', function () {
             if (this.value === 'Yes') {
-                document.getElementById('viable_no_details').classList.remove('hidden');
-            }else {
                 document.getElementById('viable_no_details').classList.add('hidden');
+            }else {
+                document.getElementById('viable_no_details').classList.remove('hidden');
             }
         });
     });
-    
+
     {#document.querySelectorAll('input[name="electric_poles"]').forEach((input) => {#}
     {#    input.addEventListener('change', function () {#}
     {#        document.getElementById('electric_poles_details').classList.toggle('hidden', this.value !== 'Yes');#}
     {#        if (this.value === 'Yes') {#}
-    {#        #}    
+    {#        #}
     {#        }#}
     {#    });#}
-    
+
 
 
     function loadBlockOne() {
