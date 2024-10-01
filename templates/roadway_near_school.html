@@ -255,6 +255,7 @@
             <label for="zebraMap">Pin-point Zebra Crossing Location:</label>
             <input type="text" id="ZebraMapCoordinate" name="zebraMapCoordinate" placeholder="Pin-point on map"
                 readonly>
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="zebraMap"></div>
         </div>
     </fieldset>
@@ -289,6 +290,7 @@
                 <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 1:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate1" name="foot_over_bridge_map_coordinate1"
                     placeholder="Pin-point on map" readonly>
+                <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map1"></div>
             </div>
 
@@ -301,6 +303,7 @@
                 <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 2:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate2" name="foot_over_bridge_map_coordinate2"
                     placeholder="Pin-point on map" readonly>
+                <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map2"></div> <br>
             </div>
 
@@ -313,6 +316,7 @@
                 <label for="foot_over_bridge_map3">Pin-point Foot-over Bridge Location 3:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate3" name="foot_over_bridge_map_coordinate3"
                     placeholder="Pin-point on map" readonly>
+                <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map3"></div> <br>
             </div>
         </div>
@@ -339,6 +343,7 @@
         <label for="electric_poles_map">Pin-point Electric Poles Location:</label>
         <input type="text" id="electric_poles_map_coordinate" name="electric_poles_map_coordinate"
             placeholder="Pin-point on map" readonly>
+        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
         <div id="electric_poles_map"></div>
     </fieldset>
 
@@ -366,6 +371,7 @@
             <label for="on_street_vehicle_parking_map_one">Pin-point Foot-over Bridge Location:</label>
             <input type="text" id="on_street_vehicle_parking_map_coordinate_one"
                 name="on_street_vehicle_parking_map_coordinate_one" placeholder="Pin-point on map" readonly>
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="on_street_vehicle_parking_map_one"></div>
 
         </div>
@@ -380,6 +386,7 @@
             <label for="on_street_vehicle_parking_map_two">Pin-point Foot-over Bridge Location:</label>
             <input type="text" id="on_street_vehicle_parking_map_coordinate_two"
                 name="on_street_vehicle_parking_map_coordinate_two" placeholder="Pin-point on map" readonly>
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="on_street_vehicle_parking_map_two"></div>
 
         </div>
@@ -405,68 +412,73 @@
 </form>
 <!-- Leaflet JS -->
 <!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<!-- Your Script -->
-<script>
-    // Initialize the map and set its view to a default location (e.g., Kathmandu)
-    function initializeMap(mapId, inputId) {
+<    <!-- Leaflet JS -->
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+         crossorigin=""></script>
+  <!-- Your Script -->
+    <script>
+        // Initialize the map and set its view to a default location (e.g., Kathmandu)
+        function initializeMap(mapId, inputId) {
 
 
-        const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        });
+            const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            });
 
-        const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
-        });
+            const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
+            });
 
-        const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-        });
+            const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            });
 
-        const mapInstance = L.map(mapId, {
-            center: [38.715755604432346, -9.141667043719174],
-            zoom: 17,
-            layers: [osm, osmHOT, Esri_WorldImagery]
-        });
+            const mapInstance = L.map(mapId, {
+                center: [38.715755604432346, -9.141667043719174],
+                zoom: 17,
+                layers: [osm, osmHOT, Esri_WorldImagery]
+            });
 
-        const baseMaps = {
-            "OpenStreetMap": osm,
-            "OpenStreetMap.HOT": osmHOT,
-            "Esri_WorldImagery": Esri_WorldImagery
-        };
+            const baseMaps = {
+                "OpenStreetMap": osm,
+                "OpenStreetMap.HOT": osmHOT,
+                "Esri_WorldImagery": Esri_WorldImagery
+            };
 
 
-        const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
+            const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
 
-        mapInstance.locate({ setView: true, maxZoom: 20 });
+            mapInstance.locate({setView: true, maxZoom: 28});
 
-        // Marker variable to store the selected location
-        let marker;
+            // Marker variable to store the selected location
+            let marker;
 
-        // Function to update marker and coordinates on the map
-        function onMapClick(e) {
-            const { lat, lng } = e.latlng;
+             L.DomEvent.on(document.getElementById('btnGetLoc'), 'click', function(){
+                mapInstance.locate({setView: true, maxZoom: 28});
+              })
 
-            // If there's already a marker, remove it
-            if (marker) {
-                mapInstance.removeLayer(marker);
+            // Function to update marker and coordinates on the map
+            function onMapClick(e) {
+                const { lat, lng } = e.latlng;
+
+                // If there's already a marker, remove it
+                if (marker) {
+                    mapInstance.removeLayer(marker);
+                }
+
+                // Add a new marker to the map at the clicked location
+                marker = L.marker([lat, lng]).addTo(mapInstance);
+
+                // Display the coordinates in the HTML
+                document.getElementById(inputId).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
             }
 
-            // Add a new marker to the map at the clicked location
-            marker = L.marker([lat, lng]).addTo(mapInstance);
-
-            // Display the coordinates in the HTML
-            document.getElementById(inputId).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+            // Event listener for clicks on the map
+            mapInstance.on('click', onMapClick);
         }
-        
-        // Event listener for clicks on the map
-        mapInstance.on('click', onMapClick);
-    }
     
     initializeMap('zebraMap', 'ZebraMapCoordinate');
     initializeMap('foot_over_bridge_map1', 'foot_over_bridge_map_coordinate1')

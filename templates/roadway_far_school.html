@@ -255,6 +255,7 @@
             <label for="zebraMap">Pin-point Zebra Crossing Location:</label>
             <input type="text" id="ZebraMapCoordinate" name="zebraMapCoordinate" placeholder="Pin-point on map"
                 readonly>
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="zebraMap"></div>
         </div>
     </fieldset>
@@ -289,6 +290,7 @@
                 <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 1:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate1" name="foot_over_bridge_map_coordinate1"
                     placeholder="Pin-point on map" readonly>
+                <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map1"></div>
             </div>
 
@@ -301,6 +303,7 @@
                 <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 2:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate2" name="foot_over_bridge_map_coordinate2"
                     placeholder="Pin-point on map" readonly>
+                <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map2"></div> <br>
             </div>
 
@@ -313,6 +316,7 @@
                 <label for="foot_over_bridge_map3">Pin-point Foot-over Bridge Location 3:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate3" name="foot_over_bridge_map_coordinate3"
                     placeholder="Pin-point on map" readonly>
+                <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map3"></div> <br>
             </div>
         </div>
@@ -339,6 +343,7 @@
         <label for="electric_poles_map">Pin-point Electric Poles Location:</label>
         <input type="text" id="electric_poles_map_coordinate" name="electric_poles_map_coordinate"
             placeholder="Pin-point on map" readonly>
+        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
         <div id="electric_poles_map"></div>
     </fieldset>
 
@@ -366,6 +371,7 @@
             <label for="on_street_vehicle_parking_map_one">Pin-point Foot-over Bridge Location:</label>
             <input type="text" id="on_street_vehicle_parking_map_coordinate_one"
                 name="on_street_vehicle_parking_map_coordinate_one" placeholder="Pin-point on map" readonly>
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="on_street_vehicle_parking_map_one"></div>
             
         </div>
@@ -380,6 +386,7 @@
             <label for="on_street_vehicle_parking_map_two">Pin-point Foot-over Bridge Location:</label>
             <input type="text" id="on_street_vehicle_parking_map_coordinate_two"
                 name="on_street_vehicle_parking_map_coordinate_two" placeholder="Pin-point on map" readonly>
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="on_street_vehicle_parking_map_two"></div>
             
         </div>
@@ -388,8 +395,7 @@
     <button type="submit">Submit</button>
 </form>
         <!-- Leaflet JS -->
- <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+     <!-- Leaflet JS -->
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
          crossorigin=""></script>
@@ -428,10 +434,14 @@
 
             const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
 
-            mapInstance.locate({setView: true, maxZoom: 20});
+            mapInstance.locate({setView: true, maxZoom: 28});
 
             // Marker variable to store the selected location
             let marker;
+
+             L.DomEvent.on(document.getElementById('btnGetLoc'), 'click', function(){
+                mapInstance.locate({setView: true, maxZoom: 28});
+              })
 
             // Function to update marker and coordinates on the map
             function onMapClick(e) {

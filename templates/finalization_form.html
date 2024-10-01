@@ -179,8 +179,7 @@
 </form>
     
         <!-- Leaflet JS -->
- <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+     <!-- Leaflet JS -->
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
          crossorigin=""></script>
@@ -219,10 +218,14 @@
 
             const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
 
-            mapInstance.locate({setView: true, maxZoom: 20});
+            mapInstance.locate({setView: true, maxZoom: 28});
 
             // Marker variable to store the selected location
             let marker;
+
+             L.DomEvent.on(document.getElementById('btnGetLoc'), 'click', function(){
+                mapInstance.locate({setView: true, maxZoom: 28});
+              })
 
             // Function to update marker and coordinates on the map
             function onMapClick(e) {

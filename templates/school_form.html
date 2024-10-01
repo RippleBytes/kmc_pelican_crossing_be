@@ -8,6 +8,10 @@
         .hidden {
              display: none;
         }
+
+        #map{
+            width: 100%;
+        }
     </style>
 {%  endblock %}
 
@@ -97,15 +101,19 @@
             <option value="Outside-Compound">Outside Compound</option>
         </select>
 
+        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
         <div id="busMap" class="hidden"></div>
         
         <!-- Bus Pick up/Drop off Points -->
         <label for="pickLocation">8. Pick up FROM SCHOOL Point:</label>
         <input type="text" id="pickLocation" name="pickLocation" placeholder="Pin-point on map">
+
+        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
         <div id="pickUpMap" class="hidden"></div>
 
         <label for="dropLocation">8. Drop off AT SCHOOL Point:</label>
         <input type="text" id="dropLocation" name="dropLocation" placeholder="Pin-point on map">
+        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
         <div id="dropOffMap" class="hidden"></div>
     </div>
         <label for="isSameTimingAllYear"> Is Same Timing All Year</label>
@@ -132,7 +140,6 @@
  <!-- Your Script -->
 
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
          crossorigin=""></script>
@@ -171,25 +178,14 @@
 
             const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
 
-            mapInstance.locate({setView: true, maxZoom: 20});
+            mapInstance.locate({setView: true, maxZoom: 28});
 
             // Marker variable to store the selected location
             let marker;
-            
+
              L.DomEvent.on(document.getElementById('btnGetLoc'), 'click', function(){
-                mapInstance.locate({setView: true, maxZoom: 18});
+                mapInstance.locate({setView: true, maxZoom: 28});
               })
-        
-                function onLocationFound(e) {
-                    var radius = e.accuracy;
-                
-                    L.marker(e.latlng).addTo(map)
-                        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-                
-                    L.circle(e.latlng, radius).addTo(map);
-                }
-                
-                mapInstance.on('locationfound', onLocationFound);
 
             // Function to update marker and coordinates on the map
             function onMapClick(e) {
@@ -216,8 +212,8 @@
         initializeMap('busMap', 'busParkingLocation');
         initializeMap('pickUpMap', 'pickLocation');
         initializeMap('dropOffMap', 'dropLocation');
-        
-       
+
+
 
         // Show/Hide Bus Details if Bus Facility is available
         document.getElementById('busFacility').addEventListener('change', function () {
@@ -289,6 +285,7 @@
                 <input type="file" name="entranceImage[]" accept="image/*">
                 <label for="entranceLocation${index}">Entrance/Exit Location:</label><br>
                 <input type="text" name="entranceLocation[]" id="entranceLocation${index}" placeholder="Pin-point on map" readonly>
+                <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="map${index}"></div>
             `;
             container.appendChild(newDiv);
