@@ -167,7 +167,7 @@
             {# </div>#}
 
         <div class="form-group">
-            <img src="{% static "/media/gate.png" %}}"><br><br>
+            <img src="{% static 'gate.png' %}"><br><br>
             <label for="pictures_near_side">8. From near-side looking into far-side:</label>
             <input type="file" id="pictures_near_side" name="pictures_near_side"><br>
             <label for="pictures_far_side">9. From far-side looking into near-side:</label>
@@ -190,7 +190,7 @@
         <div id="traffic_lights_details" class="hidden">
             <div class="form-group">
                 <label> 10.1Working:</label><br>
-                <input type="radio" id="working" name="traffic_lights_working" value="Working" >
+                <input type="radio" id="working" name="traffic_lights_working" value="Working">
                 <label for="working">Working</label><br>
                 <input type="radio" id="not_working" name="traffic_lights_working" value="Not-Working">
                 <label for="not_working">Not Working</label><br>
@@ -305,7 +305,7 @@
             </div>
 
             <div id="footover3" class="hidden">
-                          <div class="form-group"></div>
+                <div class="form-group"></div>
                 <label for="foot_over_bridge_picture3">Picture of the Facility 3:</label>
                 <input type="file" id="foot_over_bridge_picture3" name="foot_over_bridge_picture3"><br>
 
@@ -359,8 +359,8 @@
         <div id="on_street_vehicle_parking_detail_one" class="hidden">
             <div class="form-group">
                 <label for="on_street_vehicle_parking_pictures_one">Picture of the Vehicle Parking:</label>
-                <input type="file" id="on_street_vehicle_parking_pictures_one" name="on_street_vehicle_parking_picture_one"
-                    multiple>
+                <input type="file" id="on_street_vehicle_parking_pictures_one"
+                    name="on_street_vehicle_parking_picture_one" multiple>
             </div>
 
             <label for="on_street_vehicle_parking_map_one">Pin-point Foot-over Bridge Location:</label>
@@ -373,8 +373,8 @@
         <div id="on_street_vehicle_parking_detail_two" class="hidden">
             <div class="form-group">
                 <label for="on_street_vehicle_parking_pictures_two">Picture of the Vehicle Parking:</label>
-                <input type="file" id="on_street_vehicle_parking_pictures_two" name="on_street_vehicle_parking_picture_two"
-                    multiple>
+                <input type="file" id="on_street_vehicle_parking_pictures_two"
+                    name="on_street_vehicle_parking_picture_two" multiple>
             </div>
 
             <label for="on_street_vehicle_parking_map_two">Pin-point Foot-over Bridge Location:</label>
@@ -403,71 +403,70 @@
     </fieldset>
     <button type="submit">Submit</button>
 </form>
-        <!-- Leaflet JS -->
- <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-         crossorigin=""></script>
-  <!-- Your Script -->
-    <script>
-        // Initialize the map and set its view to a default location (e.g., Kathmandu)
-        function initializeMap(mapId, inputId) {
+<!-- Leaflet JS -->
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<!-- Your Script -->
+<script>
+    // Initialize the map and set its view to a default location (e.g., Kathmandu)
+    function initializeMap(mapId, inputId) {
 
 
-            const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap'
-            });
+        const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        });
 
-            const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
-            });
+        const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
+        });
 
-            const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-            });
+        const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
 
-            const mapInstance = L.map(mapId, {
-                center: [38.715755604432346, -9.141667043719174],
-                zoom: 17,
-                layers: [osm, osmHOT, Esri_WorldImagery]
-            });
+        const mapInstance = L.map(mapId, {
+            center: [38.715755604432346, -9.141667043719174],
+            zoom: 17,
+            layers: [osm, osmHOT, Esri_WorldImagery]
+        });
 
-            const baseMaps = {
-                "OpenStreetMap": osm,
-                "OpenStreetMap.HOT": osmHOT,
-                "Esri_WorldImagery": Esri_WorldImagery
-            };
+        const baseMaps = {
+            "OpenStreetMap": osm,
+            "OpenStreetMap.HOT": osmHOT,
+            "Esri_WorldImagery": Esri_WorldImagery
+        };
 
 
-            const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
+        const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
 
-            mapInstance.locate({setView: true, maxZoom: 20});
+        mapInstance.locate({ setView: true, maxZoom: 20 });
 
-            // Marker variable to store the selected location
-            let marker;
+        // Marker variable to store the selected location
+        let marker;
 
-            // Function to update marker and coordinates on the map
-            function onMapClick(e) {
-                const { lat, lng } = e.latlng;
+        // Function to update marker and coordinates on the map
+        function onMapClick(e) {
+            const { lat, lng } = e.latlng;
 
-                // If there's already a marker, remove it
-                if (marker) {
-                    mapInstance.removeLayer(marker);
-                }
-
-                // Add a new marker to the map at the clicked location
-                marker = L.marker([lat, lng]).addTo(mapInstance);
-
-                // Display the coordinates in the HTML
-                document.getElementById(inputId).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+            // If there's already a marker, remove it
+            if (marker) {
+                mapInstance.removeLayer(marker);
             }
 
-            // Event listener for clicks on the map
-            mapInstance.on('click', onMapClick);
+            // Add a new marker to the map at the clicked location
+            marker = L.marker([lat, lng]).addTo(mapInstance);
+
+            // Display the coordinates in the HTML
+            document.getElementById(inputId).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
         }
+        
+        // Event listener for clicks on the map
+        mapInstance.on('click', onMapClick);
+    }
 
     initializeMap('electric_poles_map', 'electric_poles_map_coordinate');
     initializeMap('zebraMap', 'ZebraMapCoordinate');
@@ -502,36 +501,29 @@
 
                 document.getElementById('on_street_vehicle_parking_detail_two').classList.add('hidden');
                 document.getElementById('on_street_vehicle_parking_detail_one').classList.remove('hidden');
-            }else if (this.value === 'Both-Side'){
+            } else if (this.value === 'Both-Side') {
 
-                 document.getElementById('on_street_vehicle_parking_detail_one').classList.remove('hidden');
-                 document.getElementById('on_street_vehicle_parking_detail_two').classList.remove('hidden');
-            }else{
-                 document.getElementById('on_street_vehicle_parking_detail_one').classList.add('hidden');
-                 document.getElementById('on_street_vehicle_parking_detail_two').classList.add('hidden');
+                document.getElementById('on_street_vehicle_parking_detail_one').classList.remove('hidden');
+                document.getElementById('on_street_vehicle_parking_detail_two').classList.remove('hidden');
+            } else {
+                document.getElementById('on_street_vehicle_parking_detail_one').classList.add('hidden');
+                document.getElementById('on_street_vehicle_parking_detail_two').classList.add('hidden');
             }
         });
     });
 
-     document.querySelectorAll('input[name="viable_installation"]').forEach((input) => {
+    document.querySelectorAll('input[name="viable_installation"]').forEach((input) => {
         input.addEventListener('change', function () {
             if (this.value === 'Yes') {
+                document.getElementById('viable_no_details').classList.remove('hidden');
+            } else {
                 document.getElementById('viable_no_details').classList.add('hidden');
             }else {
                 document.getElementById('viable_no_details').classList.remove('hidden');
             }
         });
     });
-
-    {#document.querySelectorAll('input[name="electric_poles"]').forEach((input) => {#}
-    {#    input.addEventListener('change', function () {#}
-    {#        document.getElementById('electric_poles_details').classList.toggle('hidden', this.value !== 'Yes');#}
-    {#        if (this.value === 'Yes') {#}
-    {#        #}
-    {#        }#}
-    {#    });#}
-
-
+    
 
     function loadBlockOne() {
         document.getElementById("width_one_block").classList.remove('hidden')
@@ -555,7 +547,7 @@
     function loadBlockPartialNo() {
         document.getElementById("partial_time").classList.add('hidden')
     }
-    
+
 
     function trafficLightExist() {
         document.getElementById("traffic_lights_details").classList.remove('hidden')
@@ -599,7 +591,7 @@
             footover1.classList.remove('hidden');
             footover2.classList.remove('hidden');
             footover3.classList.remove('hidden');
-        }else{
+        } else {
             footover1.classList.add('hidden');
             footover2.classList.add('hidden');
             footover3.classList.add('hidden');
@@ -622,12 +614,12 @@
             trafficlight2.classList.remove('hidden');
             trafficlight3.classList.add('hidden');
         }
-        else if (this.value ==='Three') {
+        else if (this.value === 'Three') {
             trafficlight1.classList.remove('hidden');
             trafficlight2.classList.remove('hidden');
             trafficlight3.classList.remove('hidden');
-        }else{
-             trafficlight1.classList.add('hidden');
+        } else {
+            trafficlight1.classList.add('hidden');
             trafficlight2.classList.add('hidden');
             trafficlight3.classList.add('hidden');
         }
