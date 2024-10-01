@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0fw-pljwd@_&!h^@dtq2q@qjiz#a%8ry#l-42)$=@s1tk6s+%d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', 'quietly-relevant-raven.ngrok-free.app']
 
 
 # Application definition
@@ -49,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CSRF_TRUSTED_ORIGINS = ['https://quietly-relevant-raven.ngrok-free.app']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ROOT_URLCONF = 'kmc_peligan_crossing.urls'
 
