@@ -467,14 +467,14 @@
         // Event listener for clicks on the map
         mapInstance.on('click', onMapClick);
     }
-
-    initializeMap('electric_poles_map', 'electric_poles_map_coordinate');
+    
     initializeMap('zebraMap', 'ZebraMapCoordinate');
     initializeMap('foot_over_bridge_map1', 'foot_over_bridge_map_coordinate1')
     initializeMap('foot_over_bridge_map2', 'foot_over_bridge_map_coordinate2')
     initializeMap('foot_over_bridge_map3', 'foot_over_bridge_map_coordinate3')
     initializeMap('on_street_vehicle_parking_map_one', 'on_street_vehicle_parking_map_coordinate_one');
     initializeMap('on_street_vehicle_parking_map_two', 'on_street_vehicle_parking_map_coordinate_two');
+    initializeMap('electric_poles_map', 'electric_poles_map_coordinate'); 
     // Event listeners for form sections
     document.querySelectorAll('input[name="zebra_crossings"]').forEach((input) => {
         input.addEventListener('change', function () {
@@ -518,8 +518,6 @@
                 document.getElementById('viable_no_details').classList.remove('hidden');
             } else {
                 document.getElementById('viable_no_details').classList.add('hidden');
-            }else {
-                document.getElementById('viable_no_details').classList.remove('hidden');
             }
         });
     });
