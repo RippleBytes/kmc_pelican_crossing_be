@@ -1,16 +1,12 @@
-
 services:
-#  migration:
-#    image: "audoze-server:latest"
-#    command:
-#      - "python manage.py migrate"
-#      - "python manage.py collectstatic"
-
   server:
+    container_name: kmcserver
+    restart: always
     image: ghcr.io/ripplebytes/kmc_pelican:latest
     build:
       context: .
     ports:
-      - 8000:8000
-    env_file:
-      - .env
+      - "4322:8000"
+    volumes:
+      - ./media_temp/:/app/media/
+      - ./db_temp/:/app/db/
