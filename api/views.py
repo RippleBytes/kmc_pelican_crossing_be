@@ -421,9 +421,9 @@ def school_form_view(request):
         school_type = request.POST.get('schoolType')
         ward = request.POST.get('ward')
         # entrance_image = request.FILES.get('entranceImage')
-        multiple_entrances = request.POST.get('multipleEntrances') == 'yes'
+        multiple_entrances = request.POST.get('multipleEntrances') == 'Yes'
         school_coordinates = request.POST.get('schoolCoordinates')
-        bus_facility = request.POST.get('busFacility') == 'yes'
+        bus_facility = request.POST.get('busFacility') == 'Yes'
         bus_count = request.POST.get('busCount') or None
         bus_ownership = request.POST.get('busOwnership') or None
         owned_buses_count = request.POST.get('ownedBusesCount') or None

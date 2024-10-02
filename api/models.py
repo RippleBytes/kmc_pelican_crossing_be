@@ -1,15 +1,17 @@
 from django.db import models
 from io import BytesIO
 from PIL import Image
-from django.core.files import File
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 def compress(image):
     im = Image.open(image)
     im_io = BytesIO()
     im.save(im_io, 'JPEG', quality=60)
-    new_image = File(im_io, name=image.name)
+    # new_image = File(im_io, name=image.name)
+    new_image = InMemoryUploadedFile(im_io, None, image.name, 'image/jpeg', im_io.tell(), None)
     return new_image
+
 
 class School(models.Model):
     SCHOOL_TYPE_CHOICES = [
@@ -60,8 +62,17 @@ class School(models.Model):
     drop_off_location_latitude = models.CharField(max_length=100, null=True, blank=True)
     drop_off_location_longitude = models.CharField(max_length=100, null=True, blank=True)
 
+    class Meta:
+        ordering = ['school_name']
+        verbose_name = 'School'
+        verbose_name_plural = 'Schools'
+
+    def __unicode__(self):
+        return self.school_name
+
     def __str__(self):
         return self.school_name
+
 
 
 class EntranceExit(models.Model):
@@ -73,13 +84,16 @@ class EntranceExit(models.Model):
     is_entrance = models.BooleanField(default=False)
     is_exit = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return self.gate_name
+
     def __str__(self):
         return self.gate_name
-    #
-    # def save(self, *args, **kwargs):
-    #     new_image = compress(self.image)
-    #     self.image = new_image
-    #     super().save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        new_image = compress(self.image)
+        self.image = new_image
+        super().save(*args, **kwargs)
 
 
 class RoadwayFacilityNear(models.Model):
@@ -126,17 +140,16 @@ class RoadwayFacilityNear(models.Model):
         ('One-Side', 'One-Side')
     ]
 
-
     YES_NO_CHOICE = [
         ('Yes', 'Yes'),
         ('No', 'No')
     ]
 
-
     TRAFFIC_LIGHT_FUNC = [
         ('Working', 'Working'),
         ('Not-Working', 'Not-Working')
     ]
+
     school = models.OneToOneField(School, on_delete=models.CASCADE)
     carriage_width = models.FloatField()
     carriage_way_direction = models.CharField(max_length=50, choices=CARRIAGE_WAY_DIRECTION)
@@ -203,56 +216,57 @@ class RoadwayFacilityNear(models.Model):
     def __str__(self):
         return f"{self.school.school_name} - Roadway Info Near"
 
-    #
-    # def save(self, *args, **kwargs):
-    #     if self.pictures_near_side:
-    #         p1 = compress(self.pictures_near_side)
-    #         self.pictures_near_side = p1
-    #
-    #     if self.pictures_far_side:
-    #         p2 = compress(self.pictures_far_side)
-    #         self.pictures_far_side = p2
-    #
-    #     if self.traffic_lights_pic_one:
-    #         p3 = compress(self.traffic_lights_pic_one)
-    #         self.traffic_lights_pic_one = p3
-    #
-    #     if self.traffic_lights_pic_two:
-    #         p4 = compress(self.traffic_lights_pic_two)
-    #         self.traffic_lights_pic_two = p4
-    #
-    #     if self.traffic_lights_pic_three:
-    #         p5 = compress(self.traffic_lights_pic_three)
-    #         self.traffic_lights_pic_three = p5
-    #
-    #     if self.foot_over_bridge_pic_one:
-    #         p6 = compress(self.foot_over_bridge_pic_one)
-    #         self.foot_over_bridge_pic_one = p6
-    #
-    #     if self.foot_over_bridge_pic_two:
-    #         p7 = compress(self.foot_over_bridge_pic_two)
-    #         self.foot_over_bridge_pic_two = p7
-    #
-    #     if self.foot_over_bridge_pic_three:
-    #         p8 = compress(self.foot_over_bridge_pic_three)
-    #         self.foot_over_bridge_pic_three = p8
-    #
-    #     if self.power_source_picture:
-    #         p9 = compress(self.power_source_picture)
-    #         self.power_source_picture = p9
-    #
-    #     if self.electric_poles_picture:
-    #         p10 = compress(self.electric_poles_picture)
-    #         self.electric_poles_picture = p10
-    #
-    #     if self.street_side_one:
-    #         p11 = compress(self.street_side_one)
-    #         self.street_side_one = p11
-    #
-    #     if self.street_side_two:
-    #         p12 = compress(self.street_side_two)
-    #         self.street_side_two = p12
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+
+        if self.pictures_near_side:
+            p1 = compress(self.pictures_near_side)
+            self.pictures_near_side = p1
+
+        if self.pictures_far_side:
+            p2 = compress(self.pictures_far_side)
+            self.pictures_far_side = p2
+
+        if self.traffic_lights_pic_one:
+            p3 = compress(self.traffic_lights_pic_one)
+            self.traffic_lights_pic_one = p3
+
+        if self.traffic_lights_pic_two:
+            p4 = compress(self.traffic_lights_pic_two)
+            self.traffic_lights_pic_two = p4
+
+        if self.traffic_lights_pic_three:
+            p5 = compress(self.traffic_lights_pic_three)
+            self.traffic_lights_pic_three = p5
+
+        if self.foot_over_bridge_pic_one:
+            p6 = compress(self.foot_over_bridge_pic_one)
+            self.foot_over_bridge_pic_one = p6
+
+        if self.foot_over_bridge_pic_two:
+            p7 = compress(self.foot_over_bridge_pic_two)
+            self.foot_over_bridge_pic_two = p7
+
+        if self.foot_over_bridge_pic_three:
+            p8 = compress(self.foot_over_bridge_pic_three)
+            self.foot_over_bridge_pic_three = p8
+
+        if self.power_source_picture:
+            p9 = compress(self.power_source_picture)
+            self.power_source_picture = p9
+
+        if self.electric_poles_picture:
+            p10 = compress(self.electric_poles_picture)
+            self.electric_poles_picture = p10
+
+        if self.street_side_one:
+            p11 = compress(self.street_side_one)
+            self.street_side_one = p11
+
+        if self.street_side_two:
+            p12 = compress(self.street_side_two)
+            self.street_side_two = p12
+        super().save(*args, **kwargs)
+
 
 class RoadwayFacilityFar(models.Model):
     DIRECTION_CHOICES = [
@@ -367,58 +381,62 @@ class RoadwayFacilityFar(models.Model):
     street_side_two_latitude = models.CharField(max_length=100, blank=True, null=True)
     street_side_two_longitude = models.CharField(max_length=100, blank=True, null=True)
 
+    def __unicode__(self):
+        return u'%s' % self.id
+
     def __str__(self):
         return f"{self.school.school_name} - Roadway Info Far"
 
-    # def save(self, *args, **kwargs):
-    #     if self.pictures_near_side:
-    #         p1 = compress(self.pictures_near_side)
-    #         self.pictures_near_side = p1
-    #
-    #     if self.pictures_far_side:
-    #         p2 = compress(self.pictures_far_side)
-    #         self.pictures_far_side = p2
-    #
-    #     if self.traffic_lights_pic_one:
-    #         p3 = compress(self.traffic_lights_pic_one)
-    #         self.traffic_lights_pic_one = p3
-    #
-    #     if self.traffic_lights_pic_two:
-    #         p4 = compress(self.traffic_lights_pic_two)
-    #         self.traffic_lights_pic_two = p4
-    #
-    #     if self.traffic_lights_pic_three:
-    #         p5 = compress(self.traffic_lights_pic_three)
-    #         self.traffic_lights_pic_three = p5
-    #
-    #     if self.foot_over_bridge_pic_one:
-    #         p6 = compress(self.foot_over_bridge_pic_one)
-    #         self.foot_over_bridge_pic_one = p6
-    #
-    #     if self.foot_over_bridge_pic_two:
-    #         p7 = compress(self.foot_over_bridge_pic_two)
-    #         self.foot_over_bridge_pic_two = p7
-    #
-    #     if self.foot_over_bridge_pic_three:
-    #         p8 = compress(self.foot_over_bridge_pic_three)
-    #         self.foot_over_bridge_pic_three = p8
-    #
-    #     if self.power_source_picture:
-    #         p9 = compress(self.power_source_picture)
-    #         self.power_source_picture = p9
-    #
-    #     if self.electric_poles_picture:
-    #         p10 = compress(self.electric_poles_picture)
-    #         self.electric_poles_picture = p10
-    #
-    #     if self.street_side_one:
-    #         p11 = compress(self.street_side_one)
-    #         self.street_side_one = p11
-    #
-    #     if self.street_side_two:
-    #         p12 = compress(self.street_side_two)
-    #         self.street_side_two = p12
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+
+        if self.pictures_near_side:
+            p1 = compress(self.pictures_near_side)
+            self.pictures_near_side = p1
+
+        if self.pictures_far_side:
+            p2 = compress(self.pictures_far_side)
+            self.pictures_far_side = p2
+
+        if self.traffic_lights_pic_one:
+            p3 = compress(self.traffic_lights_pic_one)
+            self.traffic_lights_pic_one = p3
+
+        if self.traffic_lights_pic_two:
+            p4 = compress(self.traffic_lights_pic_two)
+            self.traffic_lights_pic_two = p4
+
+        if self.traffic_lights_pic_three:
+            p5 = compress(self.traffic_lights_pic_three)
+            self.traffic_lights_pic_three = p5
+
+        if self.foot_over_bridge_pic_one:
+            p6 = compress(self.foot_over_bridge_pic_one)
+            self.foot_over_bridge_pic_one = p6
+
+        if self.foot_over_bridge_pic_two:
+            p7 = compress(self.foot_over_bridge_pic_two)
+            self.foot_over_bridge_pic_two = p7
+
+        if self.foot_over_bridge_pic_three:
+            p8 = compress(self.foot_over_bridge_pic_three)
+            self.foot_over_bridge_pic_three = p8
+
+        if self.power_source_picture:
+            p9 = compress(self.power_source_picture)
+            self.power_source_picture = p9
+
+        if self.electric_poles_picture:
+            p10 = compress(self.electric_poles_picture)
+            self.electric_poles_picture = p10
+
+        if self.street_side_one:
+            p11 = compress(self.street_side_one)
+            self.street_side_one = p11
+
+        if self.street_side_two:
+            p12 = compress(self.street_side_two)
+            self.street_side_two = p12
+        super().save(*args, **kwargs)
 
 
 class FinalizationForm(models.Model):
@@ -440,5 +458,19 @@ class FinalizationForm(models.Model):
     is_zebra_crossings_available = models.CharField(max_length=3, choices=YES_NO_CHOICE, blank=True, null=True)
     viable_power_source = models.TextField(blank=True, null=True)
 
+
+    def __unicode__(self):
+        return u'%s' % self.id
+
     def __str__(self):
         return f"Finalization for {self.school.school_name} "
+
+    def save(self, *args, **kwargs):
+
+        if self.near_side_picture:
+            p1 = compress(self.near_side_picture)
+            self.near_side_picture = p1
+
+        if self.far_side_picture:
+            p2 = compress(self.far_side_picture)
+            self.far_side_picture = p2
