@@ -109,6 +109,9 @@ class RoadwayFacilityNear(models.Model):
     CARRIAGE_WAY_DIRECTION = [
         ('One-Way', 'One-Way'),
         ('Two-Way', 'Two-Way'),
+        ('Partial-One-Way', 'Partial-One-Way'),
+        ('Partial-Two-Way', 'Partial-Two-Way'),
+
     ]
 
     DIVIDED_CHOICES = [
@@ -154,8 +157,8 @@ class RoadwayFacilityNear(models.Model):
     carriage_width = models.FloatField()
     carriage_way_direction = models.CharField(max_length=50, choices=CARRIAGE_WAY_DIRECTION)
     carriage_direction = models.CharField(max_length=20, choices=DIRECTION_CHOICES)
-    is_partial_one_way = models.BooleanField(default=False)
-    is_partial_two_way = models.BooleanField(default=False)
+    # is_partial_one_way = models.BooleanField(default=False)
+    # is_partial_two_way = models.BooleanField(default=False)
     partial_start_time = models.TimeField(null=True, blank=True)
     partial_end_time = models.TimeField(null=True, blank=True)
     # partial_direction = models.CharField(max_length=50, choices=CARRIAGE_WAY_DIRECTION)
@@ -177,6 +180,7 @@ class RoadwayFacilityNear(models.Model):
     traffic_lights_pic_one = models.ImageField(upload_to='uploads/', blank=True, null=True)
     traffic_lights_pic_two = models.ImageField(upload_to='uploads/', blank=True, null=True)
     traffic_lights_pic_three = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    traffic_lights_pic_four = models.ImageField(upload_to='uploads/', blank=True, null=True)
 
     zebra_crossings = models.CharField(max_length=3, choices=YES_NO_CHOICE)
     zebra_crossings_latitude = models.CharField(max_length=100)
@@ -238,6 +242,10 @@ class RoadwayFacilityNear(models.Model):
             p5 = compress(self.traffic_lights_pic_three)
             self.traffic_lights_pic_three = p5
 
+        if self.traffic_lights_pic_four:
+            p51 = compress(self.traffic_lights_pic_four)
+            self.traffic_lights_pic_four = p51
+
         if self.foot_over_bridge_pic_one:
             p6 = compress(self.foot_over_bridge_pic_one)
             self.foot_over_bridge_pic_one = p6
@@ -281,6 +289,8 @@ class RoadwayFacilityFar(models.Model):
     CARRIAGE_WAY_DIRECTION = [
         ('One-Way', 'One-Way'),
         ('Two-Way', 'Two-Way'),
+        ('Partial-One-Way', 'Partial-One-Way'),
+        ('Partial-Two-Way', 'Partial-Two-Way'),
     ]
 
     DIVIDED_CHOICES = [
@@ -325,8 +335,8 @@ class RoadwayFacilityFar(models.Model):
     carriage_width = models.FloatField()
     carriage_way_direction = models.CharField(max_length=50, choices=CARRIAGE_WAY_DIRECTION)
     carriage_direction = models.CharField(max_length=20, choices=DIRECTION_CHOICES)
-    is_partial_one_way = models.BooleanField(default=False)
-    is_partial_two_way = models.BooleanField(default=False)
+    # is_partial_one_way = models.BooleanField(default=False)
+    # is_partial_two_way = models.BooleanField(default=False)
     partial_start_time = models.TimeField(null=True, blank=True)
     partial_end_time = models.TimeField(null=True, blank=True)
     # partial_direction = models.CharField(max_length=50, choices=CARRIAGE_WAY_DIRECTION)
@@ -348,6 +358,7 @@ class RoadwayFacilityFar(models.Model):
     traffic_lights_pic_one = models.ImageField(upload_to='uploads/', blank=True, null=True)
     traffic_lights_pic_two = models.ImageField(upload_to='uploads/', blank=True, null=True)
     traffic_lights_pic_three = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    traffic_lights_pic_four = models.ImageField(upload_to='uploads/', blank=True, null=True)
 
     zebra_crossings = models.CharField(max_length=3, choices=YES_NO_CHOICE)
     zebra_crossings_latitude = models.CharField(max_length=100)
@@ -408,6 +419,10 @@ class RoadwayFacilityFar(models.Model):
         if self.traffic_lights_pic_three:
             p5 = compress(self.traffic_lights_pic_three)
             self.traffic_lights_pic_three = p5
+
+        if self.traffic_lights_pic_four:
+            p51 = compress(self.traffic_lights_pic_four)
+            self.traffic_lights_pic_four = p51
 
         if self.foot_over_bridge_pic_one:
             p6 = compress(self.foot_over_bridge_pic_one)

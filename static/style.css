@@ -60,16 +60,19 @@ textarea {
     border: 1px solid #ced4da;
     border-radius: 6px;
     margin-bottom: 15px;
+    margin-top: 15px;
     font-size: 1em;
     box-sizing: border-box;
 }
 
 input[type="file"] {
     margin-bottom: 15px;
+    margin-top:20px;
 }
 
 input[type="radio"] {
     margin-right: 5px;
+    margin-bottom:15px;
 }
 
 .form-group {
@@ -78,11 +81,13 @@ input[type="radio"] {
 
 .form-group input[type="radio"] {
     margin-right: 8px;
+    margin-top:20px;
 }
 
 .form-group label {
     display: inline;
     margin-right: 15px;
+    margin-bottom:15px;
 }
 
 #map,
@@ -145,4 +150,7 @@ button[type="submit"]:focus,
 
 .leaflet-container{
     height: 250px !important;
+}
+.success-msg{
+    text-align: center;
 }

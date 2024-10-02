@@ -76,24 +76,30 @@
 
     <!-- School Bus Details if yes -->
     <div id="busDetails" class="hidden">
-        <label for="busCount">7.1. How many buses? (Rough Number):</label>
-        <input type="number" id="busCount" name="busCount" min="1">
-
-        <label for="busOwnership">7.2. School Owned or Hired:</label>
+        <label for="busOwnership">7.1. School Owned or Hired:</label>
         <select id="busOwnership" name="busOwnership">
             <option value="----">Choose Option</option>
             <option value="School-Owned">School Owned</option>
             <option value="Hired">Hired</option>
             <option value="Mixed">Mixed</option>
         </select>
-
-        <div id="mixedBusDetails" class="hidden">
-            <label for="ownedBusesCount">7.3. Number of Owned Buses:</label>
+{#        <label>7.2 How many buses? (Rough Number)</label>#}
+        <div id="owned_bus" class="hidden">
+            <label for="ownedBusesCount">7.2.1 Owned Bus Count:</label>
             <input type="number" id="ownedBusesCount" name="ownedBusesCount" min="1">
-
-            <label for="hiredBusesCount">7.4. Number of Hired Buses:</label>
+        </div>
+        <div id="hired_bus" class="hidden">
+            <label for="busCount">7.2.2 Hired Bus Count:</label>
             <input type="number" id="hiredBusesCount" name="hiredBusesCount" min="1">
         </div>
+
+{#        <div id="mixedBusDetails" class="hidden">#}
+{#            <label for="ownedBusesCount">7.3. Number of Owned Buses:</label>#}
+{#            <input type="number" id="ownedBusesCount" name="ownedBusesCount" min="1">#}
+{##}
+{#            <label for="hiredBusesCount">7.4. Number of Hired Buses:</label>#}
+{#            <input type="number" id="hiredBusesCount" name="hiredBusesCount" min="1">#}
+{#        </div>#}
 
         <label for="busParking">7.5. Parking Facility for School Buses:</label>
         <select id="busParking" name="busParking">
@@ -242,11 +248,16 @@
 
         // Show/Hide Mixed Bus Ownership Details
         document.getElementById('busOwnership').addEventListener('change', function () {
-            const mixedBusDetails = document.getElementById('mixedBusDetails');
-            if (this.value === 'mixed') {
-                mixedBusDetails.classList.remove('hidden');
-            } else {
-                mixedBusDetails.classList.add('hidden');
+            {#const mixedBusDetails = document.getElementById('mixedBusDetails');#}
+            if (this.value === 'School-Owned') {
+                document.getElementById('owned_bus').classList.remove('hidden')
+                document.getElementById('hired_bus').classList.add('hidden')
+            } else if (this.value === 'Hired') {
+                document.getElementById('owned_bus').classList.add('hidden')
+                document.getElementById('hired_bus').classList.remove('hidden')
+            }else{
+                 document.getElementById('owned_bus').classList.remove('hidden')
+                document.getElementById('hired_bus').classList.remove('hidden')
             }
         });
 
@@ -277,7 +288,7 @@
                 <input type="text" name="gateName[]" id="gateName${index}">
                 <div class="form-group">
                     <input type="checkbox" name="isEntrance[]" id="isEntrance${index}">
-                    <label for="isEntrance${index}">Is Intrance:</label><br>
+                    <label for="isEntrance${index}">Is Entrance:</label><br>
                     <input type="checkbox" name="isExit[]" id="isExit${index}">
                     <label for="isExit${index}">Is Exit:</label><br>
                 <div ><br>

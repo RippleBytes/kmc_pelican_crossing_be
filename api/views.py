@@ -14,8 +14,8 @@ def roadway_near_school_submission(request, school_id):
         carriage_way_direction = request.POST.get('carriage_way_direction')
         carriage_direction_one_way = request.POST.get('carriage_way_direction_oneway')
         carriage_direction_two_way = request.POST.get('carriage_way_direction_two_way')
-        partial_one_way = request.POST.get('partial_one_way')
-        partial_two_way = request.POST.get('partial_two_way')
+        # partial_one_way = request.POST.get('partial_one_way')
+        # partial_two_way = request.POST.get('partial_two_way')
         partial_start_time = request.POST.get('partial_start_time')
         partial_end_time = request.POST.get('partial_end_time')
 
@@ -43,6 +43,7 @@ def roadway_near_school_submission(request, school_id):
         traffic_lights_pic1 = request.FILES.get('traffic_lights_pic1')
         traffic_lights_pic2 = request.FILES.get('traffic_lights_pic2')
         traffic_lights_pic3 = request.FILES.get('traffic_lights_pic3')
+        traffic_lights_pic4 = request.FILES.get('traffic_lights_pic4')
 
         # Zebra Crossings Information
         zebra_crossings = request.POST.get('zebra_crossings')
@@ -118,16 +119,17 @@ def roadway_near_school_submission(request, school_id):
 
         if rf.carriage_way_direction == 'One-Way':
             rf.carriage_direction = carriage_direction_one_way
-            if partial_one_way == 'Yes':
-                rf.is_partial_one_way = True
-                rf.partial_start_time = partial_start_time
-                rf.partial_end_time = partial_end_time
         elif rf.carriage_way_direction == 'Two-Way':
             rf.carriage_direction = carriage_direction_two_way
-            if partial_two_way == 'Yes':
-                rf.is_partial_two_way = True
-                rf.partial_start_time = partial_start_time
-                rf.partial_end_time = partial_end_time
+        elif rf.carriage_way_direction == 'Partial-One-Way':
+            rf.carriage_direction = carriage_direction_one_way
+            rf.partial_start_time = partial_start_time
+            rf.partial_end_time = partial_end_time
+        elif rf.carriage_way_direction == 'Partial-Two-Way':
+            rf.carriage_direction = carriage_direction_two_way
+            rf.partial_start_time = partial_start_time
+            rf.partial_end_time = partial_end_time
+
 
         if rf.zebra_crossings == 'Yes':
             rf.num_zebra_crossings = num_zebra_crossings
@@ -145,6 +147,11 @@ def roadway_near_school_submission(request, school_id):
                 rf.traffic_lights_pic_one = traffic_lights_pic1
                 rf.traffic_lights_pic2 = traffic_lights_pic2
                 rf.traffic_lights_pic3 = traffic_lights_pic3
+            elif rf.traffic_lights == 'Yes' and rf.num_traffic_lights == 4:
+                rf.traffic_lights_pic_one = traffic_lights_pic1
+                rf.traffic_lights_pic2 = traffic_lights_pic2
+                rf.traffic_lights_pic3 = traffic_lights_pic3
+                rf.traffic_lights_pic4 = traffic_lights_pic4
 
         if rf.foot_over_bridge == 'Yes':
             rf.num_foot_over_bridges = 3 if num_foot_over_bridges == 'Three' else 2 if num_foot_over_bridges == 'Two' else 1
@@ -226,8 +233,8 @@ def roadway_far_from_school_submission(request, school_id):
         carriage_way_direction = request.POST.get('carriage_way_direction')
         carriage_direction_one_way = request.POST.get('carriage_way_direction_oneway')
         carriage_direction_two_way = request.POST.get('carriage_way_direction_two_way')
-        partial_one_way = request.POST.get('partial_one_way')
-        partial_two_way = request.POST.get('partial_two_way')
+        # partial_one_way = request.POST.get('partial_one_way')
+        # partial_two_way = request.POST.get('partial_two_way')
         partial_start_time = request.POST.get('partial_start_time')
         partial_end_time = request.POST.get('partial_end_time')
 
@@ -255,6 +262,7 @@ def roadway_far_from_school_submission(request, school_id):
         traffic_lights_pic1 = request.FILES.get('traffic_lights_pic1')
         traffic_lights_pic2 = request.FILES.get('traffic_lights_pic2')
         traffic_lights_pic3 = request.FILES.get('traffic_lights_pic3')
+        traffic_lights_pic4 = request.FILES.get('traffic_lights_pic4')
 
         # Zebra Crossings Information
         zebra_crossings = request.POST.get('zebra_crossings')
@@ -317,16 +325,17 @@ def roadway_far_from_school_submission(request, school_id):
 
         if rf.carriage_way_direction == 'One-Way':
             rf.carriage_direction = carriage_direction_one_way
-            if partial_one_way == 'Yes':
-                rf.is_partial_one_way = True
-                rf.partial_start_time = partial_start_time
-                rf.partial_end_time = partial_end_time
         elif rf.carriage_way_direction == 'Two-Way':
             rf.carriage_direction = carriage_direction_two_way
-            if partial_two_way == 'Yes':
-                rf.is_partial_two_way = True
-                rf.partial_start_time = partial_start_time
-                rf.partial_end_time = partial_end_time
+        elif rf.carriage_way_direction == 'Partial-One-Way':
+            rf.carriage_direction = carriage_direction_one_way
+            rf.partial_start_time = partial_start_time
+            rf.partial_end_time = partial_end_time
+        elif rf.carriage_way_direction == 'Partial-Two-Way':
+            rf.carriage_direction = carriage_direction_two_way
+            rf.partial_start_time = partial_start_time
+            rf.partial_end_time = partial_end_time
+
 
         if rf.zebra_crossings == 'Yes':
             rf.num_zebra_crossings = num_zebra_crossings
@@ -344,6 +353,11 @@ def roadway_far_from_school_submission(request, school_id):
                 rf.traffic_lights_pic_one = traffic_lights_pic1
                 rf.traffic_lights_pic2 = traffic_lights_pic2
                 rf.traffic_lights_pic3 = traffic_lights_pic3
+            elif rf.traffic_lights == 'Yes' and rf.num_traffic_lights == 4:
+                rf.traffic_lights_pic_one = traffic_lights_pic1
+                rf.traffic_lights_pic2 = traffic_lights_pic2
+                rf.traffic_lights_pic3 = traffic_lights_pic3
+                rf.traffic_lights_pic4 = traffic_lights_pic4
 
         if rf.foot_over_bridge == 'Yes':
             rf.num_foot_over_bridges = 3 if num_foot_over_bridges == 'Three' else 2 if num_foot_over_bridges == 'Two' else 1

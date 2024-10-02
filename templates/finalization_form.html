@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block head %}
-<style>
-    .hidden {
-        display: none;
-    }
-</style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -135,7 +138,7 @@
         <div class="form-group">
             <input type="text" id="nearSideCoordinates" name="nearSideCoordinates" placeholder="Pin-point on map" readonly>
             <!-- Map Display -->
-            <div id="nearsidemap"></div>
+            <div id="near_side_map"></div>
 
             <input type="file" id="near_side_picture" name="near_side_picture"><br>
         </div>
@@ -147,7 +150,7 @@
             <input type="text" id="farSideCoordinates" name="farSideCoordinates" placeholder="Pin-point on map"
                 readonly>
             <!-- Map Display -->
-            <div id="farsidemap"></div>
+            <div id="far_side_map"></div>
 
             <input type="file" id="far_side_picture" name="far_side_picture"><br>
         </div>
@@ -178,8 +181,8 @@
     <button type="submit">Submit</button>
 </form>
     
-        <!-- Leaflet JS -->
-     <!-- Leaflet JS -->
+ 
+    <!-- Leaflet JS -->
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
          crossorigin=""></script>
@@ -247,8 +250,8 @@
             mapInstance.on('click', onMapClick);
         }
 
-    initializeMap('nearsidemap', 'nearSideCoordinates');
-    initializeMap('farsidemap', 'farSideCoordinates')
+    initializeMap('near_side_map', 'nearSideCoordinates');
+    initializeMap('far_side_map', 'farSideCoordinates')
 </script>
 
 {% endblock %}
