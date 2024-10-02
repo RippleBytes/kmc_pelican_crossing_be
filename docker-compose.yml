@@ -1,0 +1,16 @@
+
+services:
+#  migration:
+#    image: "audoze-server:latest"
+#    command:
+#      - "python manage.py migrate"
+#      - "python manage.py collectstatic"
+
+  server:
+    image: ghcr.io/ripplebytes/kmc_pelican:latest
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
