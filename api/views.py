@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import School, EntranceExit, RoadwayFacilityNear, RoadwayFacilityFar,FinalizationForm
+from .models import School, EntranceExit, RoadwayFacilityNear, RoadwayFacilityFar, FinalizationForm
 from django.forms.models import model_to_dict
+
 
 # Use @csrf_exempt if you have issues with CSRF tokens during form submission
 @csrf_exempt
@@ -130,7 +131,6 @@ def roadway_near_school_submission(request, school_id):
             rf.partial_start_time = partial_start_time
             rf.partial_end_time = partial_end_time
 
-
         if rf.zebra_crossings == 'Yes':
             rf.num_zebra_crossings = num_zebra_crossings
             rf.zebra_width = zebra_width
@@ -175,7 +175,7 @@ def roadway_near_school_submission(request, school_id):
                     rf.foot_over_bridge_one_latitude, rf.foot_over_bridge_one_longitude = \
                         str(foot_over_bridge_map_coordinate1).split(",")
 
-                if str(foot_over_bridge_map_coordinate2) != "" :
+                if str(foot_over_bridge_map_coordinate2) != "":
                     rf.foot_over_bridge_two_latitude, rf.foot_over_bridge_two_longitude = \
                         str(foot_over_bridge_map_coordinate2).split(",")
 
@@ -196,7 +196,8 @@ def roadway_near_school_submission(request, school_id):
         if rf.on_street_vehicle_parking == 'One-Side':
             rf.street_side_one = on_street_vehicle_parking_pictures_one
             if str(on_street_vehicle_parking_coordinate_one) != "":
-                rf.street_side_one_latitude, rf.street_side_one_longitude = str(on_street_vehicle_parking_coordinate_one).split(",")
+                rf.street_side_one_latitude, rf.street_side_one_longitude = str(
+                    on_street_vehicle_parking_coordinate_one).split(",")
         elif rf.on_street_vehicle_parking == 'Both-Side':
             rf.street_side_one = on_street_vehicle_parking_pictures_one
             if str(on_street_vehicle_parking_coordinate_one) != "":
@@ -221,7 +222,7 @@ def roadway_near_school_submission(request, school_id):
 
     school_list = School.objects.filter(id=school_id)
     # Render the form if GET request
-    return render(request, 'roadway_near_school.html', {"school_id":school_id, "data": school_list})
+    return render(request, 'roadway_near_school.html', {"school_id": school_id, "data": school_list})
 
 
 @csrf_exempt
@@ -335,7 +336,6 @@ def roadway_far_from_school_submission(request, school_id):
             rf.carriage_direction = carriage_direction_two_way
             rf.partial_start_time = partial_start_time
             rf.partial_end_time = partial_end_time
-
 
         if rf.zebra_crossings == 'Yes':
             rf.num_zebra_crossings = num_zebra_crossings
@@ -498,22 +498,36 @@ def school_form_view(request):
 
         # Handle multiple entrances
         if multiple_entrances:
-            gate_names = request.POST.get('gateName[]')
-            is_entrance = request.POST.get('isExit[]')
-            is_exit = request.POST.get('isEntrance[]')
+            gate_names = request.POST.getlist('gateName[]')
+            # is_exit = request.POST.getlist('isExit[]')
+            is_entrance = request.POST.getlist('isEntrance[]')
             entrance_images = request.FILES.getlist('entranceImage[]')
             entrance_locations = request.POST.getlist('entranceLocation[]')
-            for gateName, isEntrance, isExit, image, location in zip(gate_names, is_entrance, is_exit, entrance_images,
-                                                                     entrance_locations):
-                latitude, longitude = str(location).split(",")
+            for index, gateName in enumerate(gate_names):
                 en_tx = EntranceExit()
                 en_tx.school = school
                 en_tx.gate_name = gateName
-                en_tx.is_entrance = len(isEntrance) > 0
-                en_tx.is_exit = len(isExit) > 0
-                en_tx.image = image
-                en_tx.latitude = latitude
-                en_tx.longitude = longitude
+                try:
+                    en_tx.is_entrance = is_entrance[index] != "isExit"
+                except IndexError:
+                    en_tx.is_entrance = False
+
+                try:
+                    en_tx.is_exit = is_entrance[index] != "isEntrance"
+                except IndexError:
+                    en_tx.is_exit = False
+
+                try:
+                    en_tx.image = entrance_images[index]
+                except IndexError:
+                    pass
+
+                try:
+                    latitude, longitude = str(entrance_locations[index]).split(",")
+                    en_tx.latitude = latitude
+                    en_tx.longitude = longitude
+                except IndexError:
+                    pass
                 en_tx.save()
 
         return redirect(f'/roadway-near/{school.id}')
@@ -559,10 +573,9 @@ def finalize_form_view(request, school_id):
         finalize_form.data_far = rf_far
     finalize_form.save()
 
-    return render(request, 'finalization_form.html', {"school_id": school_id, "school":school_list,"data": finalize_form})
+    return render(request, 'finalization_form.html',
+                  {"school_id": school_id, "school": school_list, "data": finalize_form})
 
 
 def complete(request, school_id):
     return render(request, 'success.html')
-
-

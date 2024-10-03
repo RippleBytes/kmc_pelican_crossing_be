@@ -74,7 +74,6 @@ class School(models.Model):
         return self.school_name
 
 
-
 class EntranceExit(models.Model):
     school = models.ForeignKey(School, related_name='entrances', on_delete=models.CASCADE)
     gate_name = models.CharField(max_length=255)

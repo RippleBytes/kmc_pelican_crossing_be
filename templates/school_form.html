@@ -291,10 +291,11 @@
                 <label for="gateName${index}">Gate Name:</label>
                 <input type="text" name="gateName[]" id="gateName${index}">
                 <div class="form-group">
-                    <input type="checkbox" name="isEntrance[]" id="isEntrance${index}">
-                    <label for="isEntrance${index}">Is Entrance:</label><br>
-                    <input type="checkbox" name="isExit[]" id="isExit${index}">
-                    <label for="isExit${index}">Is Exit:</label><br>
+                    <select id="isEntrance${index}" name="isEntrance[]" >
+                        <option value="isEntrance">Is Entrance</option>
+                        <option value="isExit">Is Exit</option>
+                        <option value="Both">Both Entrance and Exit </option>
+                    </select>
                 <div ><br>
                 <label for="entranceImage${index}">Entrance/Exit Picture:</label>
                 <input type="file" name="entranceImage[]" accept="image/*">
@@ -309,6 +310,10 @@
             const addButton = document.getElementById('addEntrance')
             const mE = document.getElementById('multipleEntrances')
             if (mE.value === 'No') {
+                addButton.classList.add('hidden');
+            }else if (mE.value === 'Yes') {
+                addButton.classList.remove('hidden');
+            }else {
                 addButton.classList.add('hidden');
             }
         });
