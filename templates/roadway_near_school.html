@@ -260,8 +260,7 @@
             </div>
 
             <label for="zebraMap">Pin-point Zebra Crossing Location:</label>
-            <input type="text" id="ZebraMapCoordinate" name="zebraMapCoordinate" placeholder="Pin-point on map"
-                readonly>
+            <input type="text" id="ZebraMapCoordinate" name="zebraMapCoordinate" placeholder="Pin-point on map">
             <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="zebraMap"></div>
         </div>
@@ -296,7 +295,7 @@
 
                 <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 1:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate1" name="foot_over_bridge_map_coordinate1"
-                    placeholder="Pin-point on map" readonly>
+                    placeholder="Pin-point on map" >
                 <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map1"></div>
             </div>
@@ -309,7 +308,7 @@
 
                 <label for="foot_over_bridge_map">Pin-point Foot-over Bridge Location 2:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate2" name="foot_over_bridge_map_coordinate2"
-                    placeholder="Pin-point on map" readonly>
+                    placeholder="Pin-point on map" >
                 <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map2"></div> <br>
             </div>
@@ -322,7 +321,7 @@
 
                 <label for="foot_over_bridge_map3">Pin-point Foot-over Bridge Location 3:</label>
                 <input type="text" id="foot_over_bridge_map_coordinate3" name="foot_over_bridge_map_coordinate3"
-                    placeholder="Pin-point on map" readonly>
+                    placeholder="Pin-point on map" >
                 <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="foot_over_bridge_map3"></div> <br>
             </div>
@@ -349,7 +348,7 @@
 
         <label for="electric_poles_map">Pin-point Electric Poles Location:</label>
         <input type="text" id="electric_poles_map_coordinate" name="electric_poles_map_coordinate"
-            placeholder="Pin-point on map" readonly>
+            placeholder="Pin-point on map" >
         <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
         <div id="electric_poles_map"></div>
     </fieldset>
@@ -377,7 +376,7 @@
 
             <label for="on_street_vehicle_parking_map_one">Pin-point On Street Vehicle Parking Location 1:</label>
             <input type="text" id="on_street_vehicle_parking_map_coordinate_one"
-                name="on_street_vehicle_parking_map_coordinate_one" placeholder="Pin-point on map" readonly>
+                name="on_street_vehicle_parking_map_coordinate_one" placeholder="Pin-point on map" >
             <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="on_street_vehicle_parking_map_one"></div>
 
@@ -392,7 +391,7 @@
 
             <label for="on_street_vehicle_parking_map_two">Pin-point On Street Vehicle Parking Location 2:</label>
             <input type="text" id="on_street_vehicle_parking_map_coordinate_two"
-                name="on_street_vehicle_parking_map_coordinate_two" placeholder="Pin-point on map" readonly>
+                name="on_street_vehicle_parking_map_coordinate_two" placeholder="Pin-point on map" >
             <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
             <div id="on_street_vehicle_parking_map_two"></div>
 
@@ -531,7 +530,7 @@
 
     document.querySelectorAll('input[name="viable_installation"]').forEach((input) => {
         input.addEventListener('change', function () {
-            if (this.value === 'Yes') {
+            if (this.value === 'No') {
                 document.getElementById('viable_no_details').classList.remove('hidden');
             } else {
                 document.getElementById('viable_no_details').classList.add('hidden');

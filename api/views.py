@@ -438,12 +438,15 @@ def school_form_view(request):
         multiple_entrances = request.POST.get('multipleEntrances') == 'Yes'
         school_coordinates = request.POST.get('schoolCoordinates')
         bus_facility = request.POST.get('busFacility') == 'Yes'
-        bus_count = request.POST.get('busCount') or None
+        # bus_count = request.POST.get('busCount') or None
         bus_ownership = request.POST.get('busOwnership') or None
-        owned_buses_count = request.POST.get('ownedBusesCount') or None
-        hired_buses_count = request.POST.get('hiredBusesCount') or None
-        bus_parking = request.POST.get('busParking') or None
-        is_same_timing_all_year = len(request.POST.get('isSameTimingAllYear')) > 0
+        owned_buses_count = request.POST.get('ownedBusesCount') or 0
+        hired_buses_count = request.POST.get('hiredBusesCount') or 0
+        bus_parking = request.POST.get('busParking')
+        same_timing = request.POST.get('isSameTimingAllYear')
+        is_same_timing_all_year = False
+        if same_timing is not None:
+            is_same_timing_all_year = len(same_timing) > 0
         if is_same_timing_all_year:
             opening_time_summer = request.POST.get('openingTime')
             closing_time_summer = request.POST.get('closingTime')
@@ -466,7 +469,7 @@ def school_form_view(request):
             # entrance_image=entrance_image,
             multiple_entrances=multiple_entrances,
             bus_facility=bus_facility,
-            bus_count=bus_count,
+            # bus_count=bus_count,
             bus_ownership=bus_ownership,
             owned_buses_count=owned_buses_count,
             hired_buses_count=hired_buses_count,

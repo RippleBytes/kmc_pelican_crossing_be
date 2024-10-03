@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block head %}
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -63,7 +64,7 @@
 
     <!-- Coordinates of School -->
     <label for="schoolCoordinates">6. Coordinates of the School (Geometric Center):</label>
-    <input type="text" id="schoolCoordinates" name="schoolCoordinates" placeholder="Pin-point on map" readonly>
+    <input type="text" id="schoolCoordinates" name="schoolCoordinates" placeholder="Pin-point on map">
      <!-- Map Display -->
     <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
         <div id="map" ></div>
@@ -140,6 +141,7 @@
         <label for="closingTimeWinter">Closing Time Winter</label>
         <input type="time" id="closingTimeWinter" name="closingTimeWinter">
         </div>
+        <br><br>
     <button type="submit">Submit</button>
 </form>
 
@@ -239,10 +241,12 @@
         
         document.getElementById('busParking').addEventListener('change', function (){
             const busMapContainer = document.getElementById('busMap');
-            if (this.value === 'Outside-Compound') {
-                    busMapContainer.classList.remove('hidden');
-            }{
+            if (this.value === 'Inside-Compound') {
                     busMapContainer.classList.add('hidden');
+            } else if (this.value === 'Outside-Compound') {
+                    busMapContainer.classList.remove('hidden');
+            } else{
+                 busMapContainer.classList.add('hidden');
             }
         })
 
@@ -295,7 +299,7 @@
                 <label for="entranceImage${index}">Entrance/Exit Picture:</label>
                 <input type="file" name="entranceImage[]" accept="image/*">
                 <label for="entranceLocation${index}">Entrance/Exit Location:</label><br>
-                <input type="text" name="entranceLocation[]" id="entranceLocation${index}" placeholder="Pin-point on map" readonly>
+                <input type="text" name="entranceLocation[]" id="entranceLocation${index}" placeholder="Pin-point on map">
                 <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
                 <div id="map${index}"></div>
             `;

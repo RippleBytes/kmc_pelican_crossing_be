@@ -154,3 +154,22 @@ button[type="submit"]:focus,
 .success-msg{
     text-align: center;
 }
+
+.btnGetLoc{
+background: green;
+    color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 50px;
+}
+input[type="time" i] {
+   padding-top:10px;
+   padding-bottom: 10px;
+   width:90%;
+   margin-bottom:10px;
+}
+h1{
+    padding:10px
+
+}
