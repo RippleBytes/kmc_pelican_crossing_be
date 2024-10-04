@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <h1>Roadway and Existing Facilities Form ( Near )</h1>
 <form action="{% url 'roadway_form_submission' school_id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -680,4 +681,11 @@
 
     });
 </script>
+
+{% else %}
+<form>
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a> 
+</form>
+{% endif %}
 {% endblock %}

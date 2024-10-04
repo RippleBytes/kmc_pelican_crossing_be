@@ -15,317 +15,324 @@
         }
     </style>
 {%  endblock %}
-
 {% block content %}
-<h1>School Information Form</h1>
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-
-    <label for="schoolName">1. Name of School:</label>
-    <input type="text" id="schoolName" name="schoolName" required>
-
-    <!-- School Type -->
-    <label for="schoolType">2. Type:</label>
-    <select id="schoolType" name="schoolType" required>
-        <option value="Public">Public</option>
-        <option value="Private">Private</option>
-    </select>
-
-    <!-- Ward -->
-    <label for="ward">3. Ward (1 to 32):</label>
-    <input type="number" id="ward" name="ward" min="1" max="32" required>
-
-    <!-- Option to add multiple entrances -->
-    <label for="multipleEntrances">5. Does the school have multiple entrances/exits?</label>
-    <select id="multipleEntrances" name="multipleEntrances">
-         <option value="---">Choose One option</option>
-         <option value="No">No</option>
-         <option value="Yes">Yes</option>
-    </select>
-
-{#    <!-- Entrance/Exit -->#}
-{#    <label for="entranceImage">4. Entrance/Exit Picture:</label>#}
-{#    <label for="GateName">1. Name of Gate:</label>#}
-{#    <input type="text" id="GateName" name="GateName" required>#}
-{#    <input type="file" id="entranceImage" name="entranceImage" accept="image/*" required>#}
-
-    <div id="entrances" class="hidden">
-        <!-- Dynamically added entrances will be inserted here -->
-    </div>
-
-    <button type="button" id="addEntrance" class="btn-add-entrance hidden">Add Entrance/Exit Information</button>
-
-{#    <!-- Pin-point Geotag location for Entrance/Exit -->#}
-{#    <label for="entranceLocation" >6. Pin-point Entrance/Exit Location:</label>#}
-{#    <!-- <input type="text" id="entranceLocation" name="entranceLocation" placeholder="Pin-point on map" readonly> -->#}
-
-
-
-    <!-- Coordinates of School -->
-    <label for="schoolCoordinates">6. Coordinates of the School (Geometric Center):</label>
-    <input type="text" id="schoolCoordinates" name="schoolCoordinates" placeholder="Pin-point on map">
-     <!-- Map Display -->
-    <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
-        <div id="map" ></div>
-    <!-- School Bus/Shuttle Service Facility -->
-    <label for="busFacility">7. School Bus/Shuttle Service Facility:</label>
-    <select id="busFacility" name="busFacility" required>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-    </select>
-
-    <!-- School Bus Details if yes -->
-    <div id="busDetails" class="hidden">
-        <label for="busOwnership">7.1. School Owned or Hired:</label>
-        <select id="busOwnership" name="busOwnership">
-            <option value="----">Choose Option</option>
-            <option value="School-Owned">School Owned</option>
-            <option value="Hired">Hired</option>
-            <option value="Mixed">Mixed</option>
+{% if user.is_authenticated %}
+    <h1>School Information Form</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    
+        <label for="schoolName">1. Name of School:</label>
+        <input type="text" id="schoolName" name="schoolName" required>
+    
+        <!-- School Type -->
+        <label for="schoolType">2. Type:</label>
+        <select id="schoolType" name="schoolType" required>
+            <option value="Public">Public</option>
+            <option value="Private">Private</option>
         </select>
-{#        <label>7.2 How many buses? (Rough Number)</label>#}
-        <div id="owned_bus" class="hidden">
-            <label for="ownedBusesCount">7.2.1 Owned Bus Count:</label>
-            <input type="number" id="ownedBusesCount" name="ownedBusesCount" min="1">
-        </div>
-        <div id="hired_bus" class="hidden">
-            <label for="busCount">7.2.2 Hired Bus Count:</label>
-            <input type="number" id="hiredBusesCount" name="hiredBusesCount" min="1">
-        </div>
-
-{#        <div id="mixedBusDetails" class="hidden">#}
-{#            <label for="ownedBusesCount">7.3. Number of Owned Buses:</label>#}
-{#            <input type="number" id="ownedBusesCount" name="ownedBusesCount" min="1">#}
-{##}
-{#            <label for="hiredBusesCount">7.4. Number of Hired Buses:</label>#}
-{#            <input type="number" id="hiredBusesCount" name="hiredBusesCount" min="1">#}
-{#        </div>#}
-
-        <label for="busParking">7.5. Parking Facility for School Buses:</label>
-        <select id="busParking" name="busParking">
-            <option value="Inside-Compound">Inside Compound</option>
-            <option value="Outside-Compound">Outside Compound</option>
+    
+        <!-- Ward -->
+        <label for="ward">3. Ward (1 to 32):</label>
+        <input type="number" id="ward" name="ward" min="1" max="32" required>
+    
+        <!-- Option to add multiple entrances -->
+        <label for="multipleEntrances">5. Does the school have multiple entrances/exits?</label>
+        <select id="multipleEntrances" name="multipleEntrances">
+             <option value="---">Choose One option</option>
+             <option value="No">No</option>
+             <option value="Yes">Yes</option>
         </select>
-
-        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
-        <div id="busMap" class="hidden"></div>
-        
-        <!-- Bus Pick up/Drop off Points -->
-        <label for="pickLocation">8. Pick up FROM SCHOOL Point:</label>
-        <input type="text" id="pickLocation" name="pickLocation" placeholder="Pin-point on map">
-
-        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
-        <div id="pickUpMap" class="hidden"></div>
-
-        <label for="dropLocation">8. Drop off AT SCHOOL Point:</label>
-        <input type="text" id="dropLocation" name="dropLocation" placeholder="Pin-point on map">
-        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
-        <div id="dropOffMap" class="hidden"></div>
-    </div>
-        <label for="isSameTimingAllYear"> Is Same Timing All Year</label>
-         <input type="checkbox" checked name="isSameTimingAllYear" id="isSameTimingAllYear"/>
-        <div id="sameTiming" class="">
-            <label for="openingTime">Opening Time</label>
-            <input type="time" name="openingTime" id="openingTime"/>
-            <label for="closingTime">Closing Time</label>
-            <input type="time" id="closingTime" name="closingTime">
+    
+    {#    <!-- Entrance/Exit -->#}
+    {#    <label for="entranceImage">4. Entrance/Exit Picture:</label>#}
+    {#    <label for="GateName">1. Name of Gate:</label>#}
+    {#    <input type="text" id="GateName" name="GateName" required>#}
+    {#    <input type="file" id="entranceImage" name="entranceImage" accept="image/*" required>#}
+    
+        <div id="entrances" class="hidden">
+            <!-- Dynamically added entrances will be inserted here -->
         </div>
-       <div id="differentTiming" class="hidden">
-        <label for="openingTimeSummer">Opening Time Summer</label>
-        <input type="time" id="openingTimeSummer" name="openingTimeSummer">
-        <label for="closingTimeSummer">Closing Time Summer</label>
-        <input type="time" id="closingTimeSummer" name="closingTimeSummer">
-        <label for="openingTimeWinter">Opening Time Winter</label>
-        <input type="time" id="openingTimeWinter" name="openingTimeWinter">
-        <label for="closingTimeWinter">Closing Time Winter</label>
-        <input type="time" id="closingTimeWinter" name="closingTimeWinter">
+    
+        <button type="button" id="addEntrance" class="btn-add-entrance hidden">Add Entrance/Exit Information</button>
+    
+    {#    <!-- Pin-point Geotag location for Entrance/Exit -->#}
+    {#    <label for="entranceLocation" >6. Pin-point Entrance/Exit Location:</label>#}
+    {#    <!-- <input type="text" id="entranceLocation" name="entranceLocation" placeholder="Pin-point on map" readonly> -->#}
+    
+    
+    
+        <!-- Coordinates of School -->
+        <label for="schoolCoordinates">6. Coordinates of the School (Geometric Center):</label>
+        <input type="text" id="schoolCoordinates" name="schoolCoordinates" placeholder="Pin-point on map">
+         <!-- Map Display -->
+        <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
+            <div id="map" ></div>
+        <!-- School Bus/Shuttle Service Facility -->
+        <label for="busFacility">7. School Bus/Shuttle Service Facility:</label>
+        <select id="busFacility" name="busFacility" required>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
+    
+        <!-- School Bus Details if yes -->
+        <div id="busDetails" class="hidden">
+            <label for="busOwnership">7.1. School Owned or Hired:</label>
+            <select id="busOwnership" name="busOwnership">
+                <option value="----">Choose Option</option>
+                <option value="School-Owned">School Owned</option>
+                <option value="Hired">Hired</option>
+                <option value="Mixed">Mixed</option>
+            </select>
+    {#        <label>7.2 How many buses? (Rough Number)</label>#}
+            <div id="owned_bus" class="hidden">
+                <label for="ownedBusesCount">7.2.1 Owned Bus Count:</label>
+                <input type="number" id="ownedBusesCount" name="ownedBusesCount" min="1">
+            </div>
+            <div id="hired_bus" class="hidden">
+                <label for="busCount">7.2.2 Hired Bus Count:</label>
+                <input type="number" id="hiredBusesCount" name="hiredBusesCount" min="1">
+            </div>
+    
+    {#        <div id="mixedBusDetails" class="hidden">#}
+    {#            <label for="ownedBusesCount">7.3. Number of Owned Buses:</label>#}
+    {#            <input type="number" id="ownedBusesCount" name="ownedBusesCount" min="1">#}
+    {##}
+    {#            <label for="hiredBusesCount">7.4. Number of Hired Buses:</label>#}
+    {#            <input type="number" id="hiredBusesCount" name="hiredBusesCount" min="1">#}
+    {#        </div>#}
+    
+            <label for="busParking">7.5. Parking Facility for School Buses:</label>
+            <select id="busParking" name="busParking">
+                <option value="Inside-Compound">Inside Compound</option>
+                <option value="Outside-Compound">Outside Compound</option>
+            </select>
+    
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
+            <div id="busMap" class="hidden"></div>
+            
+            <!-- Bus Pick up/Drop off Points -->
+            <label for="pickLocation">8. Pick up FROM SCHOOL Point:</label>
+            <input type="text" id="pickLocation" name="pickLocation" placeholder="Pin-point on map">
+    
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
+            <div id="pickUpMap" class="hidden"></div>
+    
+            <label for="dropLocation">8. Drop off AT SCHOOL Point:</label>
+            <input type="text" id="dropLocation" name="dropLocation" placeholder="Pin-point on map">
+            <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
+            <div id="dropOffMap" class="hidden"></div>
         </div>
-        <br><br>
-    <button type="submit">Submit</button>
-</form>
-
- <!-- Your Script -->
-
-    <!-- Leaflet JS -->
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-         crossorigin=""></script>
-  <!-- Your Script -->
-    <script>
-        // Initialize the map and set its view to a default location (e.g., Kathmandu)
-        function initializeMap(mapId, inputId) {
-
-
-            const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap'
-            });
-
-            const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
-            });
-
-            const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-            });
-
-            const mapInstance = L.map(mapId, {
-                center: [38.715755604432346, -9.141667043719174],
-                zoom: 17,
-                layers: [osm, osmHOT, Esri_WorldImagery]
-            });
-
-            const baseMaps = {
-                "OpenStreetMap": osm,
-                "OpenStreetMap.HOT": osmHOT,
-                "Esri_WorldImagery": Esri_WorldImagery
-            };
-
-
-            const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
-
-            mapInstance.locate({setView: true, maxZoom: 28});
-
-            // Marker variable to store the selected location
-            let marker;
-
-             L.DomEvent.on(document.getElementById('btnGetLoc'), 'click', function(){
+            <label for="isSameTimingAllYear"> Is Same Timing All Year</label>
+             <input type="checkbox" checked name="isSameTimingAllYear" id="isSameTimingAllYear"/>
+            <div id="sameTiming" class="">
+                <label for="openingTime">Opening Time</label>
+                <input type="time" name="openingTime" id="openingTime"/>
+                <label for="closingTime">Closing Time</label>
+                <input type="time" id="closingTime" name="closingTime">
+            </div>
+           <div id="differentTiming" class="hidden">
+            <label for="openingTimeSummer">Opening Time Summer</label>
+            <input type="time" id="openingTimeSummer" name="openingTimeSummer">
+            <label for="closingTimeSummer">Closing Time Summer</label>
+            <input type="time" id="closingTimeSummer" name="closingTimeSummer">
+            <label for="openingTimeWinter">Opening Time Winter</label>
+            <input type="time" id="openingTimeWinter" name="openingTimeWinter">
+            <label for="closingTimeWinter">Closing Time Winter</label>
+            <input type="time" id="closingTimeWinter" name="closingTimeWinter">
+            </div>
+            <br><br>
+        <button type="submit">Submit</button>
+    </form>
+    
+     <!-- Your Script -->
+    
+        <!-- Leaflet JS -->
+         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+             crossorigin=""></script>
+      <!-- Your Script -->
+        <script>
+            // Initialize the map and set its view to a default location (e.g., Kathmandu)
+            function initializeMap(mapId, inputId) {
+    
+    
+                const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                });
+    
+                const osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
+                });
+    
+                const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                });
+    
+                const mapInstance = L.map(mapId, {
+                    center: [38.715755604432346, -9.141667043719174],
+                    zoom: 17,
+                    layers: [osm, osmHOT, Esri_WorldImagery]
+                });
+    
+                const baseMaps = {
+                    "OpenStreetMap": osm,
+                    "OpenStreetMap.HOT": osmHOT,
+                    "Esri_WorldImagery": Esri_WorldImagery
+                };
+    
+    
+                const layerControl = L.control.layers(baseMaps).addTo(mapInstance);
+    
                 mapInstance.locate({setView: true, maxZoom: 28});
-              })
-
-            // Function to update marker and coordinates on the map
-            function onMapClick(e) {
-                const { lat, lng } = e.latlng;
-
-                // If there's already a marker, remove it
-                if (marker) {
-                    mapInstance.removeLayer(marker);
+    
+                // Marker variable to store the selected location
+                let marker;
+    
+                 L.DomEvent.on(document.getElementById('btnGetLoc'), 'click', function(){
+                    mapInstance.locate({setView: true, maxZoom: 28});
+                  })
+    
+                // Function to update marker and coordinates on the map
+                function onMapClick(e) {
+                    const { lat, lng } = e.latlng;
+    
+                    // If there's already a marker, remove it
+                    if (marker) {
+                        mapInstance.removeLayer(marker);
+                    }
+    
+                    // Add a new marker to the map at the clicked location
+                    marker = L.marker([lat, lng]).addTo(mapInstance);
+    
+                    // Display the coordinates in the HTML
+                    document.getElementById(inputId).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
                 }
-
-                // Add a new marker to the map at the clicked location
-                marker = L.marker([lat, lng]).addTo(mapInstance);
-
-                // Display the coordinates in the HTML
-                document.getElementById(inputId).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+    
+                // Event listener for clicks on the map
+                mapInstance.on('click', onMapClick);
             }
-
-            // Event listener for clicks on the map
-            mapInstance.on('click', onMapClick);
-        }
-
-        // Initialize the maps
-        initializeMap('map', 'schoolCoordinates');
-        initializeMap('busMap', 'busParkingLocation');
-        initializeMap('pickUpMap', 'pickLocation');
-        initializeMap('dropOffMap', 'dropLocation');
-
-
-
-        // Show/Hide Bus Details if Bus Facility is available
-        document.getElementById('busFacility').addEventListener('change', function () {
-            const busDetails = document.getElementById('busDetails');
-            const dropOffMapContainer = document.getElementById('dropOffMap');
-            const pickMapContainer = document.getElementById('pickUpMap');
-            if (this.value === 'Yes') {
-                busDetails.classList.remove('hidden');
-                dropOffMapContainer.classList.remove('hidden');
-                pickMapContainer.classList.remove('hidden');
-            } else {
-                busDetails.classList.add('hidden');
-                dropOffMapContainer.classList.add('hidden');
-                pickMapContainer.classList.add('hidden');
-            }
-        });
-        
-        document.getElementById('busParking').addEventListener('change', function (){
-            const busMapContainer = document.getElementById('busMap');
-            if (this.value === 'Inside-Compound') {
-                    busMapContainer.classList.add('hidden');
-            } else if (this.value === 'Outside-Compound') {
-                    busMapContainer.classList.remove('hidden');
-            } else{
-                 busMapContainer.classList.add('hidden');
-            }
-        })
-
-        // Show/Hide Mixed Bus Ownership Details
-        document.getElementById('busOwnership').addEventListener('change', function () {
-            {#const mixedBusDetails = document.getElementById('mixedBusDetails');#}
-            if (this.value === 'School-Owned') {
-                document.getElementById('owned_bus').classList.remove('hidden')
-                document.getElementById('hired_bus').classList.add('hidden')
-            } else if (this.value === 'Hired') {
-                document.getElementById('owned_bus').classList.add('hidden')
-                document.getElementById('hired_bus').classList.remove('hidden')
-            }else{
-                 document.getElementById('owned_bus').classList.remove('hidden')
-                document.getElementById('hired_bus').classList.remove('hidden')
-            }
-        });
-
-        // Show/Hide Multiple Entrances Form
-        document.getElementById('multipleEntrances').addEventListener('change', function () {
-            const entrances = document.getElementById('entrances');
-            const addButton = document.getElementById('addEntrance')
-            if (this.value === 'Yes') {
-                addButton.classList.remove('hidden');
-                entrances.classList.remove('hidden');
-            } else if (this.value === 'No') {
-                addButton.classList.remove('hidden');
-                entrances.classList.remove('hidden');
-            } else {
-                addButton.classList.add('hidden');
-                entrances.classList.add('hidden')
-            }
-        });
-
-        // Add additional entrance form dynamically
-        document.getElementById('addEntrance').addEventListener('click', function () {
-            const container = document.getElementById('entrances');
-            const index = container.children.length + 1;
-            const newDiv = document.createElement('div');
-            newDiv.classList.add('entrance');
-            newDiv.innerHTML = `
-                <label for="gateName${index}">Gate Name:</label>
-                <input type="text" name="gateName[]" id="gateName${index}">
-                <div class="form-group">
-                    <select id="isEntrance${index}" name="isEntrance[]" >
-                        <option value="isEntrance">Is Entrance</option>
-                        <option value="isExit">Is Exit</option>
-                        <option value="Both">Both Entrance and Exit </option>
-                    </select>
-                <div ><br>
-                <label for="entranceImage${index}">Entrance/Exit Picture:</label>
-                <input type="file" name="entranceImage[]" accept="image/*">
-                <label for="entranceLocation${index}">Entrance/Exit Location:</label><br>
-                <input type="text" name="entranceLocation[]" id="entranceLocation${index}" placeholder="Pin-point on map">
-                <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
-                <div id="map${index}"></div>
-            `;
-            container.appendChild(newDiv);
-            initializeMap(`map${index}`, `entranceLocation${index}`);
-
-            const addButton = document.getElementById('addEntrance')
-            const mE = document.getElementById('multipleEntrances')
-            if (mE.value === 'No') {
-                addButton.classList.add('hidden');
-            }else if (mE.value === 'Yes') {
-                addButton.classList.remove('hidden');
-            }else {
-                addButton.classList.add('hidden');
-            }
-        });
-
-        document.getElementById("isSameTimingAllYear").addEventListener('change', function () {
-                if (this.checked === true){
-                    document.getElementById("sameTiming").classList.remove("hidden")
-                    document.getElementById("differentTiming").classList.add("hidden")
-                }else{
-                     document.getElementById("sameTiming").classList.add("hidden")
-                    document.getElementById("differentTiming").classList.remove("hidden")
+    
+            // Initialize the maps
+            initializeMap('map', 'schoolCoordinates');
+            initializeMap('busMap', 'busParkingLocation');
+            initializeMap('pickUpMap', 'pickLocation');
+            initializeMap('dropOffMap', 'dropLocation');
+    
+    
+    
+            // Show/Hide Bus Details if Bus Facility is available
+            document.getElementById('busFacility').addEventListener('change', function () {
+                const busDetails = document.getElementById('busDetails');
+                const dropOffMapContainer = document.getElementById('dropOffMap');
+                const pickMapContainer = document.getElementById('pickUpMap');
+                if (this.value === 'Yes') {
+                    busDetails.classList.remove('hidden');
+                    dropOffMapContainer.classList.remove('hidden');
+                    pickMapContainer.classList.remove('hidden');
+                } else {
+                    busDetails.classList.add('hidden');
+                    dropOffMapContainer.classList.add('hidden');
+                    pickMapContainer.classList.add('hidden');
                 }
             });
-    </script>
+            
+            document.getElementById('busParking').addEventListener('change', function (){
+                const busMapContainer = document.getElementById('busMap');
+                if (this.value === 'Inside-Compound') {
+                        busMapContainer.classList.add('hidden');
+                } else if (this.value === 'Outside-Compound') {
+                        busMapContainer.classList.remove('hidden');
+                } else{
+                     busMapContainer.classList.add('hidden');
+                }
+            })
+    
+            // Show/Hide Mixed Bus Ownership Details
+            document.getElementById('busOwnership').addEventListener('change', function () {
+                {#const mixedBusDetails = document.getElementById('mixedBusDetails');#}
+                if (this.value === 'School-Owned') {
+                    document.getElementById('owned_bus').classList.remove('hidden')
+                    document.getElementById('hired_bus').classList.add('hidden')
+                } else if (this.value === 'Hired') {
+                    document.getElementById('owned_bus').classList.add('hidden')
+                    document.getElementById('hired_bus').classList.remove('hidden')
+                }else{
+                     document.getElementById('owned_bus').classList.remove('hidden')
+                    document.getElementById('hired_bus').classList.remove('hidden')
+                }
+            });
+    
+            // Show/Hide Multiple Entrances Form
+            document.getElementById('multipleEntrances').addEventListener('change', function () {
+                const entrances = document.getElementById('entrances');
+                const addButton = document.getElementById('addEntrance')
+                if (this.value === 'Yes') {
+                    addButton.classList.remove('hidden');
+                    entrances.classList.remove('hidden');
+                } else if (this.value === 'No') {
+                    addButton.classList.remove('hidden');
+                    entrances.classList.remove('hidden');
+                } else {
+                    addButton.classList.add('hidden');
+                    entrances.classList.add('hidden')
+                }
+            });
+    
+            // Add additional entrance form dynamically
+            document.getElementById('addEntrance').addEventListener('click', function () {
+                const container = document.getElementById('entrances');
+                const index = container.children.length + 1;
+                const newDiv = document.createElement('div');
+                newDiv.classList.add('entrance');
+                newDiv.innerHTML = `
+                    <label for="gateName${index}">Gate Name:</label>
+                    <input type="text" name="gateName[]" id="gateName${index}">
+                    <div class="form-group">
+                        <select id="isEntrance${index}" name="isEntrance[]" >
+                            <option value="isEntrance">Is Entrance</option>
+                            <option value="isExit">Is Exit</option>
+                            <option value="Both">Both Entrance and Exit </option>
+                        </select>
+                    <div ><br>
+                    <label for="entranceImage${index}">Entrance/Exit Picture:</label>
+                    <input type="file" name="entranceImage[]" accept="image/*">
+                    <label for="entranceLocation${index}">Entrance/Exit Location:</label><br>
+                    <input type="text" name="entranceLocation[]" id="entranceLocation${index}" placeholder="Pin-point on map">
+                    <button type="button" class="btnGetLoc" id="btnGetLoc">Locate Me</button>
+                    <div id="map${index}"></div>
+                `;
+                container.appendChild(newDiv);
+                initializeMap(`map${index}`, `entranceLocation${index}`);
+    
+                const addButton = document.getElementById('addEntrance')
+                const mE = document.getElementById('multipleEntrances')
+                if (mE.value === 'No') {
+                    addButton.classList.add('hidden');
+                }else if (mE.value === 'Yes') {
+                    addButton.classList.remove('hidden');
+                }else {
+                    addButton.classList.add('hidden');
+                }
+            });
+    
+            document.getElementById("isSameTimingAllYear").addEventListener('change', function () {
+                    if (this.checked === true){
+                        document.getElementById("sameTiming").classList.remove("hidden")
+                        document.getElementById("differentTiming").classList.add("hidden")
+                    }else{
+                         document.getElementById("sameTiming").classList.add("hidden")
+                        document.getElementById("differentTiming").classList.remove("hidden")
+                    }
+                });
+        </script>
+    
+{% else %}
+    <form>
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a> 
+    </form>
+{% endif %}
 {% endblock %}

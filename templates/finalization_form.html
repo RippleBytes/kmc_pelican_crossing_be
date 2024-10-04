@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <h1>Finalization Form</h1>
 <form action="{% url 'finalize' school_id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -253,4 +254,10 @@
     initializeMap('far_side_map', 'farSideCoordinates')
 </script>
 
+    {% else %}
+    <form>
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a> 
+    </form>
+{% endif %}
 {% endblock %}

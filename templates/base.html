@@ -12,14 +12,23 @@
     <!-- Link to your external CSS file -->
     <link rel="stylesheet" href="{% static "style.css" %}">
     {%  block head %}
-        
+
     {%  endblock %}
 </head>
 <body>
+    {% if user.is_authenticated %}
+    <nav >
+        <form action="{% url 'logout' %}" method="post" >{% csrf_token %}
+            <h3>Hi {{ user.username }}!</h3>
+            <button type="submit">Log Out</button>
+        </form>
+    </nav>
 
+    {% endif %}
     {% block content %}
 
     {% endblock %}
+
  <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
