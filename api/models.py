@@ -108,9 +108,7 @@ class RoadwayFacilityNear(models.Model):
     CARRIAGE_WAY_DIRECTION = [
         ('One-Way', 'One-Way'),
         ('Two-Way', 'Two-Way'),
-        ('Partial-One-Way', 'Partial-One-Way'),
-        ('Partial-Two-Way', 'Partial-Two-Way'),
-
+        ('Partial', 'Partial'),
     ]
 
     DIVIDED_CHOICES = [
@@ -158,9 +156,12 @@ class RoadwayFacilityNear(models.Model):
     carriage_direction = models.CharField(max_length=20, choices=DIRECTION_CHOICES)
     # is_partial_one_way = models.BooleanField(default=False)
     # is_partial_two_way = models.BooleanField(default=False)
-    partial_start_time = models.TimeField(null=True, blank=True)
-    partial_end_time = models.TimeField(null=True, blank=True)
-    # partial_direction = models.CharField(max_length=50, choices=CARRIAGE_WAY_DIRECTION)
+    partial_start_time_one_way = models.TimeField(null=True, blank=True)
+    partial_end_time_one_way = models.TimeField(null=True, blank=True)
+    partial_start_time_two_way = models.TimeField(null=True, blank=True)
+    partial_end_time_two_way = models.TimeField(null=True, blank=True)
+    partial_direction_one_way = models.CharField(max_length=50, choices=DIRECTION_CHOICES, blank=True, null=True)
+    partial_direction_two_way = models.CharField(max_length=50, choices=DIRECTION_CHOICES, blank=True, null=True)
     divided = models.CharField(max_length=20, choices=DIVIDED_CHOICES)
     intersection_type = models.CharField(max_length=50, null=True, blank=True, choices=INTERSECTION_TYPE)
     number_of_lanes = models.CharField(max_length=100, null=True, blank=True)

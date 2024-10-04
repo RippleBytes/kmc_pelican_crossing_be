@@ -17,8 +17,10 @@ def roadway_near_school_submission(request, school_id):
         carriage_direction_two_way = request.POST.get('carriage_way_direction_two_way')
         # partial_one_way = request.POST.get('partial_one_way')
         # partial_two_way = request.POST.get('partial_two_way')
-        partial_start_time = request.POST.get('partial_start_time')
-        partial_end_time = request.POST.get('partial_end_time')
+        partial_start_time_one_way = request.POST.get('partial_start_time_one_way')
+        partial_end_time_one_way = request.POST.get('partial_end_time_one_way')
+        partial_start_time_two_way = request.POST.get('partial_start_time_two_way')
+        partial_end_time_two_way = request.POST.get('partial_end_time_two_way')
 
         divided_undivided = request.POST.get('divided_undivided')
         intersection_type = request.POST.get('intersection_type')
@@ -122,14 +124,13 @@ def roadway_near_school_submission(request, school_id):
             rf.carriage_direction = carriage_direction_one_way
         elif rf.carriage_way_direction == 'Two-Way':
             rf.carriage_direction = carriage_direction_two_way
-        elif rf.carriage_way_direction == 'Partial-One-Way':
-            rf.carriage_direction = carriage_direction_one_way
-            rf.partial_start_time = partial_start_time
-            rf.partial_end_time = partial_end_time
-        elif rf.carriage_way_direction == 'Partial-Two-Way':
-            rf.carriage_direction = carriage_direction_two_way
-            rf.partial_start_time = partial_start_time
-            rf.partial_end_time = partial_end_time
+        elif rf.carriage_way_direction == 'Partial':
+            rf.partial_direction_one_way = carriage_direction_one_way
+            rf.partial_direction_two_way = carriage_direction_two_way
+            rf.partial_start_time_one_way = partial_start_time_one_way
+            rf.partial_end_time_one_way = partial_end_time_one_way
+            rf.partial_start_time_two_way = partial_start_time_two_way
+            rf.partial_end_time_two_way = partial_end_time_two_way
 
         if rf.zebra_crossings == 'Yes':
             rf.num_zebra_crossings = num_zebra_crossings

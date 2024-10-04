@@ -35,18 +35,19 @@
                 <option value="---">Choose One option</option>
                 <option value="Two-Way">Two Way</option>
                 <option value="One-Way">One Way</option>
-                <option value="Partial-One-Way">Partial One Way</option>
-                <option value="Partial-Two-Way">Partial Two Way</option>
+                <option value="Partial">Partial</option>
             </select>
-            <div id="partial_time" class="hidden">
-                <label for="Partial_One_Way_Time_Start_Time">Start Time</label>
-                <input type="time" name="partial_start_time" id="Partial_One_Way_Time_Start_Time" />
+                    <div id="partial_time_two_way"  class="hidden">
+                        <br>
+                <label><b>Partial Two Way</b></label>
+            <br><br>
+                        <label for="Partial_Two_Way_Time_Start_Time">Start Time</label>
+                        <input type="time" name="partial_start_time_two_way" id="Partial_Two_Way_Time_Start_Time" /><br>
 
-                <label for="Partial_One_Way_Time_Close_Time">Close Time</label>
-                <input type="time" name="partial_end_time" id="Partial_One_Way_Time_Close_Time" />
-            </div>
-
-            <div id="twoway" class="hidden">
+                        <label for="Partial_Two_Way_Time_Close_Time">Close Time</label>
+                        <input type="time" name="partial_end_time_two_way" id="Partial_Two_Way_Time_Close_Time" /><br>
+                    </div><br>
+                <div id="twoway" class="hidden">
                 <input type="radio" id="North-South" name="carriage_way_direction_two_way" value="North-South">
                 <label for="North-South">North-South</label><br>
 
@@ -63,6 +64,16 @@
 {#                    onclick="loadBlockPartialNo();">#}
 {#                <label for="Patial_Two_way_no">No</label>#}
             </div>
+            <br>
+            
+                <div id="partial_time_one_way" class="hidden">
+                    <label> <b>Partial One Way</b> </label><br><br>
+                    <label for="Partial_One_Way_Time_Start_Time">Start Time</label>
+                    <input type="time" name="partial_start_time_one_way" id="Partial_One_Way_Time_Start_Time" /><br>
+
+                    <label for="Partial_One_Way_Time_Close_Time">Close Time</label>
+                    <input type="time" name="partial_end_time_one_way" id="Partial_One_Way_Time_Close_Time" /><br>
+                 </div>
 
             <div id="oneway" class="hidden">
                 <input type="radio" id="North" name="carriage_way_direction_oneway" value="North">
@@ -575,35 +586,34 @@
     document.getElementById('carriage_Way_Direction').addEventListener('change', function () {
         const twoway = document.getElementById('twoway');
         const oneway = document.getElementById('oneway');
-        const partial_time = document.getElementById('partial_time');
-        
+        const partial_time = document.getElementById('partial_time_one_way');
+        const partial_time_two_way = document.getElementById('partial_time_two_way');
+
 
 
         if (this.value === 'Two-Way') {
             twoway.classList.remove('hidden');
             oneway.classList.add('hidden');
             partial_time.classList.add('hidden');
-        } 
+            partial_time_two_way.classList.add('hidden');
+        }
         else if (this.value === 'One-Way') {
             twoway.classList.add('hidden');
             oneway.classList.remove('hidden');
             partial_time.classList.add('hidden');
-        } 
-        else if (this.value === 'Partial-One-Way') {
-            twoway.classList.add('hidden');
+            partial_time_two_way.classList.add('hidden');
+        }
+        else if (this.value === 'Partial') {
+            twoway.classList.remove('hidden');
             oneway.classList.remove('hidden');
             partial_time.classList.remove('hidden');
-        }
-         else if (this.value === 'Partial-Two-Way') {
-            twoway.classList.remove('hidden');
-            oneway.classList.add('hidden');
-            partial_time.classList.remove('hidden');
-        }
-         else{
+            partial_time_two_way.classList.remove('hidden');
+        } else{
              twoway.classList.add('hidden');
             oneway.classList.add('hidden');
             partial_time.classList.add('hidden');
-             
+            partial_time_two_way.classList.add('hidden');
+
         }
     });
     // Show/Hide Number of Foot bridge Form
