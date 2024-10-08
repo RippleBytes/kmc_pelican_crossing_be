@@ -473,7 +473,6 @@ class FinalizationForm(models.Model):
     is_zebra_crossings_available = models.CharField(max_length=3, choices=YES_NO_CHOICE, blank=True, null=True)
     viable_power_source = models.TextField(blank=True, null=True)
 
-
     def __unicode__(self):
         return u'%s' % self.id
 
@@ -489,3 +488,4 @@ class FinalizationForm(models.Model):
         if self.far_side_picture:
             p2 = compress(self.far_side_picture)
             self.far_side_picture = p2
+        super().save(*args, **kwargs)

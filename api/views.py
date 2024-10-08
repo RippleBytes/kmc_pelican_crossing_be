@@ -542,6 +542,8 @@ def finalize_form_view(request, school_id):
         far_side_coordinate = request.POST.get('farSideCoordinates')
         zebra_crossings = request.POST.get('zebra_crossings')
         viable_text = request.POST.get('viabletext')
+        near_side_picture = request.POST.get('near_side_picture')
+        far_side_picture = request.POST.get('far_side_picture')
 
         final_form = FinalizationForm.objects.get(school_id=school_id)
         if near_side_coordinate != "":
@@ -549,18 +551,25 @@ def finalize_form_view(request, school_id):
 
         if far_side_coordinate != "":
             final_form.far_side_latitude, final_form.far_side_longitude = str(far_side_coordinate).split(",")
+
+        if near_side_picture != "":
+            final_form.near_side_picture = near_side_picture
+
+        if far_side_picture != "":
+            final_form.far_side_picture = far_side_picture
+
         final_form.is_zebra_crossings_available = zebra_crossings
-        final_form.viable_text = viable_text
+        final_form.viable_power_source = viable_text
         final_form.save()
 
         return redirect(f'/complete/{school_id}')
-    old_form = None
 
+    old_form = None
     school_list = School.objects.filter(id=school_id)
     rf_near = RoadwayFacilityNear.objects.get(school_id=school_id)
     finalize_form = FinalizationForm()
     try:
-        old_form = FinalizationForm.objects.get(school_id=school_id)
+        old_form = FinalizationForm.objects.get(school_id=school_id, )
         finalize_form.id = old_form.id
     except:
         pass
@@ -572,6 +581,7 @@ def finalize_form_view(request, school_id):
         rf_far = RoadwayFacilityFar.objects.get(school_id=school_id)
         finalize_form.is_near_side = False
         finalize_form.data_far = rf_far
+
     finalize_form.save()
 
     return render(request, 'finalization_form.html',
