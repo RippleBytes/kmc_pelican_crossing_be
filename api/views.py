@@ -590,3 +590,32 @@ def finalize_form_view(request, school_id):
 
 def complete(request, school_id):
     return render(request, 'success.html')
+
+
+def home(request):
+    school_list = School.objects.all().order_by('-id')
+    return render(request, 'home.html', {"school_list": school_list})
+
+
+def check_path(request, school_id):
+    if school_id != 0:
+        try:
+            school = School.objects.get(id=school_id)
+            near = RoadwayFacilityNear.objects.get(school_id=school_id)
+            far = RoadwayFacilityFar.objects.get(school_id=school_id)
+            finalize = FinalizationForm.objects.get(school_id=school_id)
+        except School.DoesNotExist:
+            return redirect('/home')
+        except RoadwayFacilityNear.DoesNotExist:
+            return redirect(f'/roadway-near/{school_id}')
+        except RoadwayFacilityFar.DoesNotExist:
+            return redirect(f'/roadway-far/{school_id}')
+        except FinalizationForm.DoesNotExist:
+            return redirect(f'/finalize/{school_id}')
+
+        return redirect(f'/complete/{school_id}')
+    return redirect('/home')
+
+
+
+

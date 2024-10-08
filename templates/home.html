@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left; /* Change to 'center' or 'right' if needed */
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5; /* Highlight row on hover */
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF; /* Customize link color */
+        }
+        .btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-right: 5px;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+         .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007BFF; /* Bootstrap blue */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .btn-container {
+            text-align: right; /* Aligns the button to the right */
+            margin-bottom: 10px; /* Adds some space below the button */
+        }
+    </style>
+{%  endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Schools</h1>
+      <div class="btn-container">
+            <a href="{% url 'school_form_new' %}" class="btn">Add School</a>
+      </div>
+    <br>
+    <table >
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for school in school_list %}
+            <tr>
+                <td><a href="{% url 'school_form' school.id %}">{{ school.id }}</a></td>
+                <td><a href="{% url 'school_form' school.id %}">{{ school.school_name }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <form>
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">Log In</a>
+    </form>
+{% endif %}
+{% endblock %}
