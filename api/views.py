@@ -542,8 +542,8 @@ def finalize_form_view(request, school_id):
         far_side_coordinate = request.POST.get('farSideCoordinates')
         zebra_crossings = request.POST.get('zebra_crossings')
         viable_text = request.POST.get('viabletext')
-        near_side_picture = request.POST.get('near_side_picture')
-        far_side_picture = request.POST.get('far_side_picture')
+        near_side_picture = request.FILES.get('near_side_picture')
+        far_side_picture = request.FILES.get('far_side_picture')
 
         final_form = FinalizationForm.objects.get(school_id=school_id)
         if near_side_coordinate != "":
@@ -609,7 +609,8 @@ def check_path(request, school_id):
         except RoadwayFacilityNear.DoesNotExist:
             return redirect(f'/roadway-near/{school_id}')
         except RoadwayFacilityFar.DoesNotExist:
-            return redirect(f'/roadway-far/{school_id}')
+            if near.viable_installation == 'No':
+                return redirect(f'/roadway-far/{school_id}')
         except FinalizationForm.DoesNotExist:
             return redirect(f'/finalize/{school_id}')
 
